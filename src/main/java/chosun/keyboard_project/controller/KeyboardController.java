@@ -22,7 +22,7 @@ public class KeyboardController {
 
     @GetMapping("/hello")
     public String hell(){
-        return "hello";
+        return "helloA";
     }
 
     @PostMapping("filter")
