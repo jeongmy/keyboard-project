@@ -1,15 +1,13 @@
 package chosun.keyboard_project.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
+//@AllArgsConstructor 이거 있으면 밑에 모든 args있는 생성자 안 써도 됨. 대체 가능. 지금은 연습용으로 다 씀.
 public class KeyboardDto {
     private Long id;
     private String name;
@@ -37,7 +35,8 @@ public class KeyboardDto {
     })*/
     public KeyboardDto(Long id, String name, String manufacturer, String switchType,
                        String sound, int keyPressureValue, String keyPressureLabel, String layout, String material,
-                       String backlight, float weightValue, String weightLabel) {
+                       String backlight, float weightValue, String weightLabel, int price,
+                       List<String> connections, List<String> purposes) {
         this.id = id;
         this.name = name;
         this.manufacturer = manufacturer;
@@ -50,5 +49,8 @@ public class KeyboardDto {
         this.backlight = backlight;
         this.weightValue = weightValue;
         this.weightLabel = weightLabel;
+        this.price = price;
+        this.connections = connections;
+        this.purposes = purposes;
     }
 }

@@ -35,9 +35,9 @@ public class Keyboard {
     )
     private List<Purpose> purposes = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "keyboard_connection",
+    @ManyToMany //다대다 관계 정의
+    @JoinTable( // 두 엔티티 간의 관계를 연결할 중간 테이블을 설정
+            name = "keyboard_connection", // 중간 테이블 이름
             joinColumns = @JoinColumn(name = "keyboard_id"),
             inverseJoinColumns = @JoinColumn(name = "connection_id")
     )

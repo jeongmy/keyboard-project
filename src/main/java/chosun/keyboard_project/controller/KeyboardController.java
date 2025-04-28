@@ -1,7 +1,10 @@
 package chosun.keyboard_project.controller;
 
+import chosun.keyboard_project.domain.Keyboard;
 import chosun.keyboard_project.dto.KeyboardDto;
 import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import chosun.keyboard_project.repository.KeyboardRepository;
+import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +28,7 @@ public class KeyboardController {
         return "helloA";
     }
 
-    @PostMapping("filter")
+    @PostMapping("/filter/jpa")
     public List<KeyboardDto> filterKeyboards(@RequestBody KeyboardFilterRequestDto filterDto) {
         return keyboardService.getFilteredKeyboards(
                 filterDto.getWeightLabels(),
@@ -39,6 +42,11 @@ public class KeyboardController {
                 filterDto.getManufacturers(),
                 filterDto.getSounds()
         );
+    }
+
+    @PostMapping("/filter/qdsl")
+    public List<KeyboardDto> filterKeyboardsByQdsl(@RequestBody KeyboardFilterRequestDto filterDto){
+        return keyboardService.filterKeyboardsByQdsl(filterDto);
     }
 
 }
