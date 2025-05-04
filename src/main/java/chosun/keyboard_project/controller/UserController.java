@@ -6,8 +6,11 @@ import chosun.keyboard_project.dto.UserJoinResponseDTO;
 import chosun.keyboard_project.dto.UserLoginRequestDTO;
 import chosun.keyboard_project.dto.UserLoginResponseDTO;
 import chosun.keyboard_project.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,14 +29,16 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public UserJoinResponseDTO join(@RequestBody UserJoinRequestDTO dto) {
+    public ResponseEntity<UserJoinResponseDTO> join(@Valid @RequestBody UserJoinRequestDTO dto) {
         System.out.println("회원가입 요청 들어옴: " + dto.getUsername());
-        return userService.join(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.join(dto));
     }
 
     @PostMapping("/login")
-    public UserLoginResponseDTO login(@RequestBody UserLoginRequestDTO dto) {
-        return userService.login(dto);
+    public ResponseEntity<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO dto) {
+        System.out.println("로그인 요청 들어옴: " + dto.getUsername());
+        return ResponseEntity.ok(userService.login(dto));
     }
+
 
 }

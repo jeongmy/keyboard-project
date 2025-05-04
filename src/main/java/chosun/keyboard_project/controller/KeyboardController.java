@@ -6,6 +6,8 @@ import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
 import chosun.keyboard_project.repository.KeyboardRepository;
 import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import chosun.keyboard_project.service.KeyboardService;
@@ -24,8 +26,14 @@ public class KeyboardController {
     }
 
     @GetMapping("/hello")
-    public String hell(){
-        return "helloA";
+    public ResponseEntity<String> hell(){
+        String h = "helloB";
+        return ResponseEntity.ok(h);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<KeyboardDto> getKeyboard(@PathVariable("id") long id){
+        return ResponseEntity.ok(keyboardService.getKeyboard(id));
     }
 
     @PostMapping("/filter/jpa")
@@ -43,10 +51,13 @@ public class KeyboardController {
                 filterDto.getSounds()
         );
     }
-
+//  예외 처리
+//  ❌ 필터 결과가 아무 것도 없을 경우	서비스	200 OK + 빈 리스트 or 404
+//  ❌ DTO가 아예 null로 들어옴	컨트롤러	400 Bad Request
     @PostMapping("/filter/qdsl")
-    public List<KeyboardDto> filterKeyboardsByQdsl(@RequestBody KeyboardFilterRequestDto filterDto){
-        return keyboardService.filterKeyboardsByQdsl(filterDto);
+    public ResponseEntity<List<KeyboardDto>> filterKeyboardsByQdsl(@RequestBody KeyboardFilterRequestDto filterDto) {
+        return ResponseEntity.ok(keyboardService.filterKeyboardsByQdsl(filterDto));
     }
+
 
 }

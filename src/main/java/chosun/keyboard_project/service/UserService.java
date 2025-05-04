@@ -28,7 +28,7 @@ public class UserService {
 
     public UserJoinResponseDTO join(UserJoinRequestDTO dto) {
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
-            throw new RuntimeException("이미 존재하는 사용자입니다.");
+            throw new RuntimeException(dto.getUsername()+"는 이미 존재하는 ID입니다.");
         }
 
         User user = User.builder()
@@ -38,6 +38,7 @@ public class UserService {
                 .build();
 
         User saved = userRepository.save(user);
+        System.out.println(dto.getUsername()+"님 회원가입 완료");
         return new UserJoinResponseDTO(saved.getId(), saved.getUsername(), saved.getRole());
     }
 
@@ -46,10 +47,11 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new RuntimeException("ID: "+ dto.getUsername() +", 비밀번호가 일치하지 않습니다.");
         }
 
         String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole());
+        System.out.println(dto.getUsername()+"님 로그인 성공");
         return new UserLoginResponseDTO(token);
     }
 

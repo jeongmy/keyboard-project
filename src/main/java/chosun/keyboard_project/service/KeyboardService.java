@@ -6,11 +6,15 @@ import chosun.keyboard_project.domain.Keyboard;
 import chosun.keyboard_project.domain.Purpose;
 import chosun.keyboard_project.dto.KeyboardDto;
 import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import chosun.keyboard_project.repository.KeyboardRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +24,13 @@ public class KeyboardService {
     @Autowired
     public KeyboardService(KeyboardRepository keyboardRepository) {
         this.keyboardRepository = keyboardRepository;
+    }
+
+    public KeyboardDto getKeyboard(long id){
+        Keyboard keyboard = keyboardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 키보드가 존재하지 않습니다. ID:" + id));
+
+        return convertToDto(keyboard);
     }
 
     public List<KeyboardDto> getFilteredKeyboards(List<String> weightLabels,
@@ -76,13 +87,31 @@ public class KeyboardService {
     }
 
     public List<KeyboardDto> filterKeyboardsByQdsl(KeyboardFilterRequestDto filterDto){
+
+        if(filterDto == null){
+            throw new IllegalStateException("필터 요청이 비어있습니다."); // 400:
+        }
+
         // QueryDSL을 사용한 필터링
         List<Keyboard> keyboards = keyboardRepository.findByQdslFilter(filterDto);
+
+        if(keyboards.isEmpty()){
+            return Collections.emptyList();
+        }
+        /*
+        List<KeyboardDto> result = new ArrayList<>();
+        for(Keyboard kb : keyboards){
+            result.add(convertToDto(kb));
+        }  같은 기능 ↓
+        */
 
         // Keyboard 엔티티를 KeyboardDto로 변환하여 반환
         return keyboards.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+
+
     }
+
 
 }
