@@ -9,6 +9,9 @@ import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import chosun.keyboard_project.repository.KeyboardRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -86,29 +89,26 @@ public class KeyboardService {
         );
     }
 
-    public List<KeyboardDto> filterKeyboardsByQdsl(KeyboardFilterRequestDto filterDto){
-
-        if(filterDto == null){
-            throw new IllegalStateException("필터 요청이 비어있습니다."); // 400:
-        }
-
-        // QueryDSL을 사용한 필터링
+    public Page<KeyboardDto> filterKeyboardsByQdsl(KeyboardFilterRequestDto filterDto, int page, int size){
+/*      QueryDSL을 사용한 필터링
         List<Keyboard> keyboards = keyboardRepository.findByQdslFilter(filterDto);
-
         if(keyboards.isEmpty()){
             return Collections.emptyList();
         }
-        /*
-        List<KeyboardDto> result = new ArrayList<>();
-        for(Keyboard kb : keyboards){
-            result.add(convertToDto(kb));
-        }  같은 기능 ↓
-        */
-
         // Keyboard 엔티티를 KeyboardDto로 변환하여 반환
         return keyboards.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+*/
+        if(filterDto == null){
+            throw new IllegalStateException("필터 요청이 비어있습니다."); // 400:
+        }
+
+        // pagination
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Keyboard> keyboards = keyboardRepository.findByQdslFilter(filterDto, pageable);
+
+        return keyboards.map(this::convertToDto);
 
 
     }

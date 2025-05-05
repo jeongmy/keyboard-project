@@ -9,6 +9,9 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -23,7 +26,7 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
     }
 
     @Override
-    public List<Keyboard> findByQdslFilter(KeyboardFilterRequestDto filterDto) {
+    public Page<Keyboard> findByQdslFilter(KeyboardFilterRequestDto filterDto, Pageable pageable) {
 
 //      QueryDSL이 자동 생성한 Q클래스 인스턴스
 //      각각 실제 Keyboard, Connection, Purpose 엔티티를 자바 코드로 표현한 객체
@@ -56,12 +59,15 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
         BooleanBuilder builder = createFilter(filterDto);
 
         // QueryDSL을 통해 필터링된 Keyboard 리스트 가져오기
-        return queryFactory
+        // 🔹 1. 실제 해당 페이지에 해당하는 데이터 조회
+        List<Keyboard> content = queryFactory
                 .selectFrom(keyboard)
                 .leftJoin(keyboard.connections, connection)
                 .leftJoin(keyboard.purposes, purpose)
                 .where(builder)
                 .distinct()
+                .offset(pageable.getOffset()) // 몇 번째부터
+                .limit(pageable.getPageSize())// 몇 개 가져올지
                 .fetch();
         //  .leftJoin(소스 컬렉션, 별칭)
         //  "keyboard가 가지고 있는 connections 컬렉션을
@@ -80,6 +86,16 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
 //       즉,
 //        keyboard.connections는 중간 테이블 먼저 조인하고,
 //                connection은 그 중간 테이블 통해 실제 대상 조인한다 → 맞습니다.
+        Long total = queryFactory
+                .select(keyboard.count())  // ✅ 핵심
+                .from(keyboard)
+                .leftJoin(keyboard.connections, connection)
+                .leftJoin(keyboard.purposes, purpose)
+                .where(builder)
+                .fetchOne();  // Long 값 하나만 나옴
+        // fetchOne()은 조회 결과가 없으면 null을 반환함 때문에 return에서 null 체크 후 아니면 그대로, 맞으면 0 리턴
+        return new PageImpl<>(content, pageable, total != null ? total : 0);
+
     }
 
     private BooleanBuilder createFilter(KeyboardFilterRequestDto filterDto) {
