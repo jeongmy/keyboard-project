@@ -100,10 +100,6 @@ public class KeyboardService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 */
-        if(filterDto == null){
-            throw new IllegalStateException("필터 요청이 비어있습니다."); // 400:
-        }
-
         // pagination
         Pageable pageable = PageRequest.of(page, size);
         Page<Keyboard> keyboards = keyboardRepository.findByQdslFilter(filterDto, pageable);

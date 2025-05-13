@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO dto) {
+    public ResponseEntity<UserLoginResponseDTO> login(@Valid @RequestBody UserLoginRequestDTO dto) {
         System.out.println("로그인 요청 들어옴: " + dto.getUsername());
         return ResponseEntity.ok(userService.login(dto));
     }

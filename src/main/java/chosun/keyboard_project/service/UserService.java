@@ -30,6 +30,7 @@ public class UserService {
 
     public UserJoinResponseDTO join(UserJoinRequestDTO dto) {
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
+            System.out.println(dto.getUsername()+"는 이미 존재하는 ID: 회원가입 실패");
             throw new DuplicateUsernameException(dto.getUsername()+"는 이미 존재하는 ID입니다.");
         }
 
