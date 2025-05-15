@@ -3,6 +3,7 @@ package chosun.keyboard_project.controller;
 import chosun.keyboard_project.domain.Keyboard;
 import chosun.keyboard_project.dto.KeyboardDto;
 import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import chosun.keyboard_project.dto.PagedResponseDTO;
 import chosun.keyboard_project.repository.KeyboardRepository;
 import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,12 +56,12 @@ public class KeyboardController {
 //  ❌ 필터 결과가 아무 것도 없을 경우	서비스	200 OK + 빈 리스트 or 404
 //  ❌ DTO가 아예 null로 들어옴	컨트롤러	400 Bad Request
     @PostMapping("/filter/qdsl")
-    public ResponseEntity<Page<KeyboardDto>> filterKeyboardsByQdsl(
+    public ResponseEntity<PagedResponseDTO<KeyboardDto>> filterKeyboardsByQdsl(
             @RequestBody KeyboardFilterRequestDto filterDto,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "5") int size
     ) {
-        return ResponseEntity.ok(keyboardService.filterKeyboardsByQdsl(filterDto, page, size));
+        return ResponseEntity.ok(new PagedResponseDTO<>(keyboardService.filterKeyboardsByQdsl(filterDto, page, size)));
     }
 
 

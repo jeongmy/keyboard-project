@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class KeyboardFilterRequestDto {
+    private List<PriceRangeDTO> priceRanges;
     private List<String> weightLabels;
     private List<String> keyPressureLabels;
     private List<String> connections;

@@ -5,6 +5,7 @@ import chosun.keyboard_project.domain.QConnection;
 import chosun.keyboard_project.domain.QKeyboard;
 import chosun.keyboard_project.domain.QPurpose;
 import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import chosun.keyboard_project.dto.PriceRangeDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -134,6 +135,20 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
         }
         if (filterDto.getSounds() != null && !filterDto.getSounds().isEmpty()) {
             builder.and(QKeyboard.keyboard.sound.in(filterDto.getSounds()));
+        }
+        if (filterDto.getPriceRanges() != null && !filterDto.getPriceRanges().isEmpty()) {
+            BooleanBuilder priceBuilder = new BooleanBuilder();
+            for (PriceRangeDTO range : filterDto.getPriceRanges()) {
+                BooleanBuilder singleRange = new BooleanBuilder();
+                if (range.getMin() != null) {
+                    singleRange.and(QKeyboard.keyboard.price.goe(range.getMin()));
+                }
+                if (range.getMax() != null) {
+                    singleRange.and(QKeyboard.keyboard.price.loe(range.getMax()));
+                }
+                priceBuilder.or(singleRange);
+            }
+            builder.and(priceBuilder);
         }
 
         return builder;
