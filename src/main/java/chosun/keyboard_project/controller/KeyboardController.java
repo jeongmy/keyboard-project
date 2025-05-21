@@ -37,21 +37,6 @@ public class KeyboardController {
         return ResponseEntity.ok(keyboardService.getKeyboard(id));
     }
 
-    @PostMapping("/filter/jpa")
-    public List<KeyboardDto> filterKeyboards(@RequestBody KeyboardFilterRequestDto filterDto) {
-        return keyboardService.getFilteredKeyboards(
-                filterDto.getWeightLabels(),
-                filterDto.getKeyPressureLabels(),
-                filterDto.getConnections(),
-                filterDto.getPurposes(),
-                filterDto.getMaterials(),
-                filterDto.getLayouts(),
-                filterDto.getBacklights(),
-                filterDto.getSwitchTypes(),
-                filterDto.getManufacturers(),
-                filterDto.getSounds()
-        );
-    }
 //  예외 처리
 //  ❌ 필터 결과가 아무 것도 없을 경우	서비스	200 OK + 빈 리스트 or 404
 //  ❌ DTO가 아예 null로 들어옴	컨트롤러	400 Bad Request

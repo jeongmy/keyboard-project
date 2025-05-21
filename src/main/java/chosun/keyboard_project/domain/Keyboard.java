@@ -10,21 +10,25 @@ import java.util.List;
 @Data
 public class Keyboard {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
 
     private String name;
     private String manufacturer;
     private String switchType;
-    private String sound;
-    private Integer keyPressureValue;
+    //private String sound;
+    private String keyPressureValue;
     private String keyPressureLabel;
     private String layout;
-    private String material;
+    //private String material;
     private String backlight;
-    private Float weightValue;
+    private String weightValue;
     private String weightLabel;
     private Integer price;
+    private String imageUrl;
+
+    //private String purchaseLink;
 
     // 관계 매핑
     @ManyToMany

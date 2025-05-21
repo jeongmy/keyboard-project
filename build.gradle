@@ -50,6 +50,9 @@ dependencies {
 	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 
+	// GPT API 요청용
+	implementation 'org.springframework.boot:spring-boot-starter-webflux' // WebClient 용
+
 }
 
 tasks.named('test') {

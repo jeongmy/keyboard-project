@@ -13,15 +13,17 @@ public class KeyboardDto {
     private String name;
     private String manufacturer;
     private String switchType;
-    private String sound;
-    private int keyPressureValue;
+    //private String sound;
+    private String keyPressureValue;
     private String keyPressureLabel;
     private String layout;
-    private String material;
+    //private String material;
     private String backlight;
-    private float weightValue;
+    private String weightValue;
     private String weightLabel;
     private int price;
+    private String imageUrl;
+    //private String purchaseLink;
     private List<String> connections;  // connection label만 리스트로
     private List<String> purposes;     // purpose label만 리스트로
 
@@ -34,22 +36,24 @@ public class KeyboardDto {
             "backlight", "weightValue", "weightLabel", "price"
     })*/
     public KeyboardDto(Long id, String name, String manufacturer, String switchType,
-                       String sound, int keyPressureValue, String keyPressureLabel, String layout, String material,
-                       String backlight, float weightValue, String weightLabel, int price,
-                       List<String> connections, List<String> purposes) {
+                       String keyPressureValue, String keyPressureLabel, String layout,
+                       String backlight, String weightValue, String weightLabel, int price, String ImageUrl,
+                        List<String> connections, List<String> purposes) {
         this.id = id;
         this.name = name;
         this.manufacturer = manufacturer;
         this.switchType = switchType;
-        this.sound = sound;
+        //this.sound = sound;
         this.keyPressureValue = keyPressureValue;
         this.keyPressureLabel = keyPressureLabel;
         this.layout = layout;
-        this.material = material;
+        //this.material = material;
         this.backlight = backlight;
         this.weightValue = weightValue;
         this.weightLabel = weightLabel;
         this.price = price;
+        this.imageUrl = ImageUrl;
+        //this.purchaseLink = purchaseLink;
         this.connections = connections;
         this.purposes = purposes;
     }

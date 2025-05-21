@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
         body.put("error", "Validation Failed");
         body.put("message", e.getMessage());
         body.put("code", 400);
-        System.out.println("회원가입 실패(유효성 검사 실패)");
+        System.out.println("로그인 or 회원가입 실패: 유효성 검사 실패)");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 }

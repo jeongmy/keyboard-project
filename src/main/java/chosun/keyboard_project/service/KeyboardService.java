@@ -36,29 +36,29 @@ public class KeyboardService {
         return convertToDto(keyboard);
     }
 
-    public List<KeyboardDto> getFilteredKeyboards(List<String> weightLabels,
-                                                  List<String> keyPressureLabels,
-                                                  List<String> connections,
-                                                  List<String> purposes,
-                                                  List<String> materials,
-                                                  List<String> layouts,
-                                                  List<String> backlights,
-                                                  List<String> switchTypes,
-                                                  List<String> manufacturers,
-                                                  List<String> sounds
-                                                  ) {
-
-        // 필터 조건을 키보드 리포지토리의 메서드로 전달
-        List<Keyboard> keyboards = keyboardRepository.findByDynamicFilters(
-                weightLabels, keyPressureLabels, connections, purposes,
-                materials, layouts, backlights, switchTypes, manufacturers,sounds
-        );
-
-        // 엔티티를 DTO로 변환 후 반환
-        return keyboards.stream()
-                .map(this::convertToDto)
-                .toList();
-    }
+//    public List<KeyboardDto> getFilteredKeyboards(List<String> weightLabels,
+//                                                  List<String> keyPressureLabels,
+//                                                  List<String> connections,
+//                                                  List<String> purposes,
+//                                                  List<String> materials,
+//                                                  List<String> layouts,
+//                                                  List<String> backlights,
+//                                                  List<String> switchTypes,
+//                                                  List<String> manufacturers,
+//                                                  List<String> sounds
+//                                                  ) {
+//
+//        // 필터 조건을 키보드 리포지토리의 메서드로 전달
+//        List<Keyboard> keyboards = keyboardRepository.findByDynamicFilters(
+//                weightLabels, keyPressureLabels, connections, purposes,
+//                materials, layouts, backlights, switchTypes, manufacturers,sounds
+//        );
+//
+//        // 엔티티를 DTO로 변환 후 반환
+//        return keyboards.stream()
+//                .map(this::convertToDto)
+//                .toList();
+//    }
 
     // 엔티티를 DTO로 변환하는 메서드
     private KeyboardDto convertToDto(Keyboard keyboard) {
@@ -74,15 +74,17 @@ public class KeyboardService {
                 keyboard.getName(),
                 keyboard.getManufacturer(),
                 keyboard.getSwitchType(),
-                keyboard.getSound(),
+                //keyboard.getSound(),
                 keyboard.getKeyPressureValue(),
                 keyboard.getKeyPressureLabel(),
                 keyboard.getLayout(),
-                keyboard.getMaterial(),
+                //keyboard.getMaterial(),
                 keyboard.getBacklight(),
                 keyboard.getWeightValue(),
                 keyboard.getWeightLabel(),
                 keyboard.getPrice(),
+                keyboard.getImageUrl(),
+                //keyboard.getPurchaseLink(),
                 connectionLabels,
                 purposeLabels
 

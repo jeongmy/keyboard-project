@@ -118,9 +118,9 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
         if (filterDto.getPurposes() != null && !filterDto.getPurposes().isEmpty()) {
             builder.and(QPurpose.purpose.label.in(filterDto.getPurposes()));
         }
-        if (filterDto.getMaterials() != null && !filterDto.getMaterials().isEmpty()) {
-            builder.and(QKeyboard.keyboard.material.in(filterDto.getMaterials()));
-        }
+//        if (filterDto.getMaterials() != null && !filterDto.getMaterials().isEmpty()) {
+//            builder.and(QKeyboard.keyboard.material.in(filterDto.getMaterials()));
+//        }
         if (filterDto.getLayouts() != null && !filterDto.getLayouts().isEmpty()) {
             builder.and(QKeyboard.keyboard.layout.in(filterDto.getLayouts()));
         }
@@ -133,9 +133,9 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
         if (filterDto.getManufacturers() != null && !filterDto.getManufacturers().isEmpty()) {
             builder.and(QKeyboard.keyboard.manufacturer.in(filterDto.getManufacturers()));
         }
-        if (filterDto.getSounds() != null && !filterDto.getSounds().isEmpty()) {
-            builder.and(QKeyboard.keyboard.sound.in(filterDto.getSounds()));
-        }
+//        if (filterDto.getSounds() != null && !filterDto.getSounds().isEmpty()) {
+//            builder.and(QKeyboard.keyboard.sound.in(filterDto.getSounds()));
+//        }
         if (filterDto.getPriceRanges() != null && !filterDto.getPriceRanges().isEmpty()) {
             BooleanBuilder priceBuilder = new BooleanBuilder();
             for (PriceRangeDTO range : filterDto.getPriceRanges()) {
