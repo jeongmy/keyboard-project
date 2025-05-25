@@ -1,4 +1,4 @@
-package chosun.keyboard_project;
+package chosun.keyboard_project.gpt_utill;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

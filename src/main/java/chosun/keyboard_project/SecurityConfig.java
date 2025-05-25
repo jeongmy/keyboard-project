@@ -70,8 +70,14 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/join", "/users/login").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                "/users/**",
+                                "/keyboards/**",
+                                "/api/**",
+                                "/mbti/**").permitAll()
+                        .requestMatchers(
+                                "users/me"
+                        ).authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

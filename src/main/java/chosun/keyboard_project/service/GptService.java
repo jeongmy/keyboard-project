@@ -1,6 +1,6 @@
 package chosun.keyboard_project.service;
 
-import chosun.keyboard_project.GptMapper;
+import chosun.keyboard_project.gpt_utill.GptMapper;
 import chosun.keyboard_project.dto.GptFilterDto;
 import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -65,8 +65,7 @@ Return only a valid JSON object that reflects the user's intent.
 
 
         Map<String, Object> request = Map.of(
-                //"model", "gpt-3.5-turbo",
-                "model", "gpt-4o",
+                "model", "gpt-4o-mini",
                 "messages", List.of(
                         Map.of("role", "user", "content", prompt)
                 )

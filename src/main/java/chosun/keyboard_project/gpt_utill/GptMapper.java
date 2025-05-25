@@ -1,4 +1,4 @@
-package chosun.keyboard_project;
+package chosun.keyboard_project.gpt_utill;
 
 import chosun.keyboard_project.dto.GptFilterDto;
 import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
