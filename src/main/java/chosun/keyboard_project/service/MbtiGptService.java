@@ -45,7 +45,7 @@ public class MbtiGptService {
         sb.append("- layouts: [\"풀배열\", \"텐키리스\"]\n");
         sb.append("- backlights: [\"레인보우 백라이트\", \"RGB 백라이트\", \"없음\"]\n");
         sb.append("- switchTypes: [\"리니어\", \"택타일\", \"클릭\"]\n");
-        sb.append("- manufacturers: [\"앱코\", \"AULA\", \"한성컴퓨터\", \"Riccks\", \"CORSAIR\"]\n\n");
+        sb.append("- manufacturers: [\"ASUS\", \"AULA\", \"COX\", \"Ducky\", \"FL\", \"Keydous\", \"LEOBOG\", \"MCHOSE\", \"MOUNTAIN\", \"NZXT\", \"QSENN\", \"Razer\", \"Riccks\", \"VARMILO\", \"darkFlash\", \"다얼유\", \"마이크로닉스\", \"발키리\", \"웨이코스\", \"주연테크\", \"쿨러마스터\"]\n\n");
 
         // [2] 사용자 질문+답변
         sb.append("다음은 사용자의 MBTI 성향을 파악하기 위한 12개의 질문과 응답입니다:\n\n");

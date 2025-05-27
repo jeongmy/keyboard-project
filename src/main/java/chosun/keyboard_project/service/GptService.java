@@ -37,14 +37,14 @@ public class GptService {
 단, 아래의 허용된 값만 사용할 수 있어, 오직 아래의 허용된 값에서만 선택해야해.
 
 - priceRanges: ["null~49999"], ["50000~99999"], ["100000~149999"], ["150000~null"]
-- weightLabels: ["가벼움", "보통", "무거움"]
-- keyPressureLabels: ["가벼움", "보통", "묵직함"]
+- weightLabels: ["가벼운", "보통", "무거운"]
+- keyPressureLabels: ["가벼운", "보통", "묵직한"]
 - connections: ["유선", "무선", "유선+무선"]
 - purposes: ["게임용", "사무용"]
 - layouts: ["풀배열", "텐키리스"]
 - backlights: ["레인보우 백라이트", "RGB 백라이트", "없음"]
 - switchTypes: ["리니어", "택타일", "클릭"]
-- manufacturers: ["앱코", "AULA", "한성컴퓨터", "Riccks", "CORSAIR"]
+- manufacturers: ["로지텍", "CHERRY", "앱코", "CORSAIR", "ASUS", "AULA", "COX", "Ducky", "FL", "LEOBOG", "MCHOSE", "MOUNTAIN", "NZXT", "QSENN", "Razer", "Riccks", "VARMILO", "darkFlash", "다얼유", "마이크로닉스", "발키리", "웨이코스", "주연테크", "쿨러마스터"]
 
 너에게 도움이 될만한 지식을 줄게.
 1. priceRanges는 가격과 관련된 필드니까 사용자가 가성비나 가격에 대해서 말하면 관련된 값을 선택해.

@@ -17,18 +17,18 @@ public class Keyboard {
     private String name;
     private String manufacturer;
     private String switchType;
-    //private String sound;
+    private String switchName;
     private String keyPressureValue;
     private String keyPressureLabel;
     private String layout;
-    //private String material;
     private String backlight;
     private String weightValue;
     private String weightLabel;
     private Integer price;
     private String imageUrl;
-
-    //private String purchaseLink;
+    private String purchaseLink1;
+    private String purchaseLink2;
+    private String purchaseLink3;
 
     // 관계 매핑
     @ManyToMany
