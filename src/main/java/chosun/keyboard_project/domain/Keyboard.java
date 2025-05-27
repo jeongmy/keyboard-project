@@ -25,9 +25,13 @@ public class Keyboard {
     private String weightValue;
     private String weightLabel;
     private Integer price;
+    @Column(length = 1000)
     private String imageUrl;
+    @Column(length = 1000)
     private String purchaseLink1;
+    @Column(length = 1000)
     private String purchaseLink2;
+    @Column(length = 1000)
     private String purchaseLink3;
 
     // 관계 매핑
