@@ -76,7 +76,7 @@ public class SecurityConfig {
                                 "/api/**",
                                 "/mbti/**").permitAll()
                         .requestMatchers(
-                                "users/me"
+                                "/users/me"
                         ).authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
