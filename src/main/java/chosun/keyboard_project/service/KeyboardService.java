@@ -73,11 +73,13 @@ public class KeyboardService {
                 keyboard.getId(),
                 keyboard.getName(),
                 keyboard.getManufacturer(),
+                keyboard.getHousingColor(),
                 keyboard.getSwitchType(),
                 keyboard.getSwitchName(),
                 keyboard.getKeyPressureValue(),
                 keyboard.getKeyPressureLabel(),
                 keyboard.getLayout(),
+                keyboard.getKeyCount(),
                 keyboard.getBacklight(),
                 keyboard.getWeightValue(),
                 keyboard.getWeightLabel(),
@@ -92,7 +94,7 @@ public class KeyboardService {
         );
     }
 
-    public Page<KeyboardDto> filterKeyboardsByQdsl(KeyboardFilterRequestDto filterDto, int page, int size){
+    public Page<KeyboardDto> filterKeyboardsByQdsl(KeyboardFilterRequestDto filterDto, String sort, int page, int size){
 /*      QueryDSL을 사용한 필터링
         List<Keyboard> keyboards = keyboardRepository.findByQdslFilter(filterDto);
         if(keyboards.isEmpty()){
@@ -105,7 +107,7 @@ public class KeyboardService {
 */
         // pagination
         Pageable pageable = PageRequest.of(page, size);
-        Page<Keyboard> keyboards = keyboardRepository.findByQdslFilter(filterDto, pageable);
+        Page<Keyboard> keyboards = keyboardRepository.findByQdslFilter(filterDto, sort, pageable);
 
         return keyboards.map(this::convertToDto);
 

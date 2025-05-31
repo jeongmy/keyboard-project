@@ -53,6 +53,8 @@ dependencies {
 	// GPT API 요청용
 	implementation 'org.springframework.boot:spring-boot-starter-webflux' // WebClient 용
 
+	implementation 'org.springframework.boot:spring-boot-starter-mail' // mail
+
 }
 
 tasks.named('test') {

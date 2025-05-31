@@ -12,11 +12,13 @@ public class KeyboardDto {
     private Long id;
     private String name;
     private String manufacturer;
+    private String housingColor;
     private String switchType;
     private String switchName;
     private String keyPressureValue;
     private String keyPressureLabel;
     private String layout;
+    private String keyCount;
     private String backlight;
     private String weightValue;
     private String weightLabel;
@@ -36,19 +38,22 @@ public class KeyboardDto {
             "keyPressureValue", "keyPressureLabel", "layout", "material",
             "backlight", "weightValue", "weightLabel", "price"
     })*/
-    public KeyboardDto(Long id, String name, String manufacturer, String switchType, String switchName,
-                       String keyPressureValue, String keyPressureLabel, String layout,
+    public KeyboardDto(Long id, String name, String manufacturer, String housingColor,
+                       String switchType, String switchName, String keyPressureValue,
+                       String keyPressureLabel, String layout, String keyCount,
                        String backlight, String weightValue, String weightLabel, int price, String ImageUrl,
                         String purchaseLink1, String purchaseLink2, String purchaseLink3,
                         List<String> connections, List<String> purposes) {
         this.id = id;
         this.name = name;
         this.manufacturer = manufacturer;
+        this.housingColor = housingColor;
         this.switchType = switchType;
         this.switchName = switchName;
         this.keyPressureValue = keyPressureValue;
         this.keyPressureLabel = keyPressureLabel;
         this.layout = layout;
+        this.keyCount = keyCount;
         this.backlight = backlight;
         this.weightValue = weightValue;
         this.weightLabel = weightLabel;

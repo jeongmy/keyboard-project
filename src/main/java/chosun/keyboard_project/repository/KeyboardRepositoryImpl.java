@@ -7,6 +7,7 @@ import chosun.keyboard_project.domain.QPurpose;
 import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
 import chosun.keyboard_project.dto.PriceRangeDTO;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -27,7 +28,7 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
     }
 
     @Override
-    public Page<Keyboard> findByQdslFilter(KeyboardFilterRequestDto filterDto, Pageable pageable) {
+    public Page<Keyboard> findByQdslFilter(KeyboardFilterRequestDto filterDto, String sort, Pageable pageable) {
 
 //      QueryDSL이 자동 생성한 Q클래스 인스턴스
 //      각각 실제 Keyboard, Connection, Purpose 엔티티를 자바 코드로 표현한 객체
@@ -58,6 +59,16 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
         QPurpose purpose = QPurpose.purpose;
 
         BooleanBuilder builder = createFilter(filterDto);
+
+        // 🔹 정렬 조건 정의
+        OrderSpecifier<?> orderSpecifier;
+        if ("PRICE_ASC".equalsIgnoreCase(sort)) {
+            orderSpecifier = keyboard.price.asc();
+        } else if ("PRICE_DESC".equalsIgnoreCase(sort)) {
+            orderSpecifier = keyboard.price.desc();
+        } else {
+            orderSpecifier = keyboard.id.asc(); // 기본 정렬
+        }
 
         // QueryDSL을 통해 필터링된 Keyboard 리스트 가져오기
         // 🔹 1. 실제 해당 페이지에 해당하는 데이터 조회
@@ -108,9 +119,6 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
 
         if (filterDto.getWeightLabels() != null && !filterDto.getWeightLabels().isEmpty()) {
             builder.and(QKeyboard.keyboard.weightLabel.in(filterDto.getWeightLabels()));
-        }
-        if (filterDto.getKeyPressureLabels() != null && !filterDto.getKeyPressureLabels().isEmpty()) {
-            builder.and(QKeyboard.keyboard.keyPressureLabel.in(filterDto.getKeyPressureLabels()));
         }
         if (filterDto.getConnections() != null && !filterDto.getConnections().isEmpty()) {
             builder.and(QConnection.connection.label.in(filterDto.getConnections()));

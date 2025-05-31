@@ -10,7 +10,6 @@ public class GptMapper {
         KeyboardFilterRequestDto dto = new KeyboardFilterRequestDto();
 
         dto.setWeightLabels(gpt.getWeightLabels());
-        dto.setKeyPressureLabels(gpt.getKeyPressureLabels());
         dto.setConnections(gpt.getConnections());
         dto.setPurposes(gpt.getPurposes());
         dto.setLayouts(gpt.getLayouts());

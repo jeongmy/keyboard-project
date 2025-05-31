@@ -16,11 +16,13 @@ public class Keyboard {
 
     private String name;
     private String manufacturer;
+    private String housingColor;
     private String switchType;
     private String switchName;
     private String keyPressureValue;
     private String keyPressureLabel;
     private String layout;
+    private String keyCount;
     private String backlight;
     private String weightValue;
     private String weightLabel;

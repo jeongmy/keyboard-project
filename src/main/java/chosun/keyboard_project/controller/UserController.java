@@ -3,15 +3,20 @@ package chosun.keyboard_project.controller;
 
 import chosun.keyboard_project.domain.User;
 import chosun.keyboard_project.dto.*;
+import chosun.keyboard_project.repository.UserRepository;
 import chosun.keyboard_project.service.CustomUserDetails;
 import chosun.keyboard_project.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @RestController
@@ -19,10 +24,14 @@ import org.springframework.web.bind.annotation.*;
 //@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userService = userService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/join")
@@ -52,5 +61,67 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/me")
+    public ResponseEntity<String> deleteUser(
+            @RequestBody PasswordCheckDTO dto, @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        if (!passwordEncoder.matches(dto.getUserPassword(), userDetails.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
+        }
+
+        userRepository.deleteById(userDetails.getUser().getId());
+        return ResponseEntity.ok("회원탈퇴 완료.");
+
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changeUserPasswrod(
+                @RequestBody PasswordChangeRequestDTO dto,
+                @AuthenticationPrincipal CustomUserDetails userDetails
+            ){
+        if(!passwordEncoder.matches(dto.getCurrentPassword(), userDetails.getPassword())){
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        if(!dto.getNewPassword().equals(dto.getNewPasswordConfirm())){
+            throw new IllegalArgumentException("새 비밀번호가 일치하지 않습니다.");
+        }
+
+        User user = userDetails.getUser();
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        userRepository.save(user);
+
+        return ResponseEntity.ok("비밀번호 변경 완료");
+
+    }
+
+    @GetMapping("/check-username") // 사용가능하면 True 아니면 False 반환
+    public ResponseEntity<Boolean> checkUsername(@RequestParam("username") String username){
+        return ResponseEntity.ok(!userRepository.findByUsername(username).isPresent());
+    }
+
+    @GetMapping("/check-id")
+    public ResponseEntity<Boolean> checkUserId(@RequestParam("userId") String userId){
+        return ResponseEntity.ok(!userRepository.findByUserId(userId).isPresent());
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> checkEmail(@RequestParam("userEmail") String userEmail){
+        return ResponseEntity.ok(!userRepository.findByEmail(userEmail).isPresent());
+    }
+
+    @PostMapping("/find-id")
+    public ResponseEntity<String> findUserId(@RequestBody UserEmailDTO dto){
+        User user = userRepository.findByEmail(dto.getUserEmail())
+                .orElseThrow(() -> new EntityNotFoundException("이메일과 관련된 ID가 존재하지 않습니다."));
+        return ResponseEntity.ok(user.getUserId());
+    }
+
+    @PostMapping("/reset-password") // 비밀번호 찾기 시 이메일로 임시 비밀번호 보냄
+    public ResponseEntity<String> resetPassword(@RequestBody UserEmailDTO dto){
+        System.out.println("임시 비밀번호 요청 들어옴");
+        userService.resetPassword(dto.getUserEmail());
+        return ResponseEntity.ok("임시 비밀번호가 이메일로 전송되었습니다.");
+    }
 
 }

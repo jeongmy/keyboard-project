@@ -2,10 +2,7 @@ package chosun.keyboard_project.service;
 
 import chosun.keyboard_project.JwtTokenProvider;
 import chosun.keyboard_project.domain.User;
-import chosun.keyboard_project.dto.UserJoinRequestDTO;
-import chosun.keyboard_project.dto.UserJoinResponseDTO;
-import chosun.keyboard_project.dto.UserLoginRequestDTO;
-import chosun.keyboard_project.dto.UserLoginResponseDTO;
+import chosun.keyboard_project.dto.*;
 import chosun.keyboard_project.exception.DuplicateUsernameException;
 import chosun.keyboard_project.exception.LoginFailException;
 import chosun.keyboard_project.repository.UserRepository;
@@ -13,19 +10,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.UUID;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MailService mailService;
 
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       JwtTokenProvider jwtTokenProvider, MailService mailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.mailService = mailService;
     }
 
     public UserJoinResponseDTO join(UserJoinRequestDTO dto) {
@@ -45,6 +49,10 @@ public class UserService {
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
             System.out.println(dto.getUsername() + "는 이미 사용 중인 닉네임입니다.");
             throw new DuplicateUsernameException(dto.getUsername() + "는 이미 사용 중인 닉네임입니다.");
+        }
+
+        if(!dto.getPassword().equals(dto.getPasswordConfirm())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
         User user = User.builder()
@@ -72,7 +80,8 @@ public class UserService {
                 .orElseThrow(() -> new LoginFailException("사용자를 찾을 수 없습니다."));
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new LoginFailException("ID: "+ dto.getUserId() +", 비밀번호가 일치하지 않습니다.");
+            System.out.println(user.getUserId() + ":로그인 실패");
+            throw new LoginFailException("ID:"+ dto.getUserId() +" 비밀번호가 일치하지 않습니다.");
         }
 
         String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole());
@@ -80,5 +89,14 @@ public class UserService {
         return new UserLoginResponseDTO(token);
     }
 
+    public void resetPassword(String email){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(()->new IllegalArgumentException("등록되지 않은 이메일입니다."));
+        String tempPassword = UUID.randomUUID().toString().substring(0,8);
+        user.setPassword(passwordEncoder.encode(tempPassword));
+        userRepository.save(user);
+
+        mailService.sendTemporaryMessage(email, tempPassword);
+    }
 
 }

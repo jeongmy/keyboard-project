@@ -36,13 +36,4 @@ public class GptController {
         }
     }
 
-    @PostMapping("/analyze")
-    public ResponseEntity<String> analyze(@RequestBody Map<String, String> body) {
-        System.out.println("GPT 호출 완료");
-        String userInput = body.get("message");
-        String response = gptService.extractFilters(userInput);
-        System.out.println("GPT 응답 완료");
-        return ResponseEntity.ok(response);
-    }
-
 }

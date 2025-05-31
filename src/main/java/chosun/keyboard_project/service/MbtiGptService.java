@@ -39,7 +39,6 @@ public class MbtiGptService {
         sb.append("❗ 반드시 아래 허용된 값만 사용해야 합니다:\n");
         sb.append("- priceRanges: [\"null~49999\"], [\"50000~99999\"], [\"100000~149999\"], [\"150000~null\"]\n");
         sb.append("- weightLabels: [\"가벼운\", \"보통\", \"무거운\"]\n");
-        sb.append("- keyPressureLabels: [\"가벼운\", \"보통\", \"묵직한\"]\n");
         sb.append("- connections: [\"유선\", \"무선\", \"유선+무선\"]\n");
         sb.append("- purposes: [\"게임용\", \"사무용\"]\n");
         sb.append("- layouts: [\"풀배열\", \"텐키리스\"]\n");

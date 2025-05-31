@@ -43,10 +43,11 @@ public class KeyboardController {
     @PostMapping("/filter/qdsl")
     public ResponseEntity<PagedResponseDTO<KeyboardDto>> filterKeyboardsByQdsl(
             @RequestBody KeyboardFilterRequestDto filterDto,
+            @RequestParam(name= "sort",defaultValue = "DEFAULT") String sort,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "5") int size
     ) {
-        return ResponseEntity.ok(new PagedResponseDTO<>(keyboardService.filterKeyboardsByQdsl(filterDto, page, size)));
+        return ResponseEntity.ok(new PagedResponseDTO<>(keyboardService.filterKeyboardsByQdsl(filterDto, sort, page, size)));
     }
 
 

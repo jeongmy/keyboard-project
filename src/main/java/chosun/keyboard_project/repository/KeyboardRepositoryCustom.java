@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface KeyboardRepositoryCustom {
-    Page<Keyboard> findByQdslFilter(KeyboardFilterRequestDto filterDto, Pageable pageable);
+    Page<Keyboard> findByQdslFilter(KeyboardFilterRequestDto filterDto, String sort, Pageable pageable);
 }
