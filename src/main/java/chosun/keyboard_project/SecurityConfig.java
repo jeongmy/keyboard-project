@@ -74,7 +74,8 @@ public class SecurityConfig {
                                 "/users/**",
                                 "/keyboards/**",
                                 "/api/**",
-                                "/mbti/**").permitAll()
+                                "/mbti/**",
+                                "/sounds/**").permitAll()
                         .requestMatchers(
                                 "/users/me"
                         ).authenticated()

@@ -46,7 +46,7 @@ public class GptService {
 - manufacturers: ["한성키보드", "로지텍", "CHERRY", "앱코", "CORSAIR", "ASUS", "AULA", "COX", "Ducky", "FL", "LEOBOG", "MCHOSE", "MOUNTAIN", "NZXT", "QSENN", "Razer", "Riccks", "VARMILO", "darkFlash", "다얼유", "마이크로닉스", "발키리", "웨이코스", "주연테크", "쿨러마스터"]
 
 너에게 도움이 될만한 지식을 줄게.
-1. priceRanges는 가격과 관련된 필드이고 관련된 키워드가 없으면 절대 값을 추가하지마. 저렴하거나 가성비 키보드를 찾으면 null~49999와 50000~99999를 추가해.
+1. priceRanges는 가격과 관련된 필드이고 관련된 키워드가 없으면 절대 값을 추가하지마.
 2. weightLabels는 언급이 없으면 선택하지 말고 관련된 단어가 나올 때에만 추가해.
 3. connections는 사용자가 언급을 하면 그에 맞는 하나만 선택하고 언급이 없으면 절대 선택하지마.
 4. purposes에서 사무용은 조용한 키보드고 게임용은 조금 시끄러운 특징이 있어. 관련된 단어가 있을 때에만 값을 추가해. 가격과는 상관없어.
