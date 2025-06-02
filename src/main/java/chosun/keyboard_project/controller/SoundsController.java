@@ -14,12 +14,12 @@ public class SoundsController {
     public ResponseEntity<SoundSetResponseDTO> getSounds(@PathVariable("switchType") String switchType){
         String prefix = BASE_URL + switchType.toLowerCase();
         return ResponseEntity.ok(new SoundSetResponseDTO(
-                prefix + "Enter",
-                prefix + "BackSpace",
-                prefix + "LShift",
-                prefix + "RShift",
-                prefix + "SpaceBar",
-                prefix + "NormalKey"
+                prefix + "Enter.mp3",
+                prefix + "BackSpace.mp3",
+                prefix + "LShift.mp3",
+                prefix + "RShift.mp3",
+                prefix + "SpaceBar.mp3",
+                prefix + "NormalKey.mp3"
         ));
 
     }
