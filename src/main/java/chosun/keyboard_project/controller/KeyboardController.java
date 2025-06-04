@@ -8,6 +8,8 @@ import chosun.keyboard_project.repository.KeyboardRepository;
 import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -52,9 +54,15 @@ public class KeyboardController {
 
 //    @PostMapping("/search")
 //    public ResponseEntity<PagedResponseDTO<KeyboardDto>> search(
-//            @RequestParam(name = "statement") String statement
-//
+//            @RequestParam(name = "statement") String statement,
+//            @RequestParam(name = "sort", defaultValue = "DEFAULT") String sort,
+//            @RequestParam(name = "page", defaultValue = "0") int page,
+//            @RequestParam(name = "size", defaultValue = "5") int size
 //    ){
-//
+//        Pageable pageable = PageRequest.of(page, size);
+//        keyboardService.search(statement, pageable);
 //    }
+
+
+
 }

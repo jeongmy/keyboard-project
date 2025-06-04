@@ -1,5 +1,6 @@
 package chosun.keyboard_project;
 
+import chosun.keyboard_project.exception.CustomValidationException;
 import chosun.keyboard_project.exception.DuplicateUsernameException;
 import chosun.keyboard_project.exception.LoginFailException;
 import jakarta.persistence.EntityNotFoundException;
@@ -74,4 +75,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
 
     }
+
+    @ExceptionHandler(CustomValidationException.class)
+    public ResponseEntity<Map<String, Object>> handleCustomValidation(CustomValidationException e) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", "Validation Failed");
+        body.put("message", e.getErrors());
+        body.put("code", 400);
+        return ResponseEntity.badRequest().body(body);
+    }
+
 }
