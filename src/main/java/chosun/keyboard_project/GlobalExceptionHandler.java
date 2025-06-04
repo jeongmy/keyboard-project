@@ -56,11 +56,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException e){
+//        Map<String, Object> body = new HashMap<>();
+//        body.put("error", "Validation Failed");
+//        body.put("message", e.getMessage());
+//        body.put("code", 400);
+//        System.out.println(e.getMessage());
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getFieldErrors().forEach(error -> {
+            errors.put(error.getField(), error.getDefaultMessage()); // <-- 여기서 NotBlank의 message 추출 가능
+        });
+
         Map<String, Object> body = new HashMap<>();
         body.put("error", "Validation Failed");
-        body.put("message", e.getMessage());
+        body.put("message", errors);
         body.put("code", 400);
-        System.out.println("로그인 or 회원가입 실패: 유효성 검사 실패)");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+
     }
 }

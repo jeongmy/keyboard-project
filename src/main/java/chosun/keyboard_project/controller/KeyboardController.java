@@ -50,5 +50,11 @@ public class KeyboardController {
         return ResponseEntity.ok(new PagedResponseDTO<>(keyboardService.filterKeyboardsByQdsl(filterDto, sort, page, size)));
     }
 
-
+//    @PostMapping("/search")
+//    public ResponseEntity<PagedResponseDTO<KeyboardDto>> search(
+//            @RequestParam(name = "statement") String statement
+//
+//    ){
+//
+//    }
 }
