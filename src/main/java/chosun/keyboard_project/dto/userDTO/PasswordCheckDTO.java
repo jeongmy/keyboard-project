@@ -1,4 +1,4 @@
-package chosun.keyboard_project.dto;
+package chosun.keyboard_project.dto.userDTO;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

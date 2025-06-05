@@ -4,11 +4,10 @@ import chosun.keyboard_project.domain.Keyboard;
 import chosun.keyboard_project.domain.QConnection;
 import chosun.keyboard_project.domain.QKeyboard;
 import chosun.keyboard_project.domain.QPurpose;
-import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import chosun.keyboard_project.dto.PriceRangeDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
@@ -28,7 +27,7 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
     }
 
     @Override
-    public Page<Keyboard> findByQdslFilter(KeyboardFilterRequestDto filterDto, String sort, Pageable pageable) {
+    public Page<Keyboard> findByQdslFilter(KeyboardFilterRequestDTO filterDto, String sort, Pageable pageable) {
 
 //      QueryDSL이 자동 생성한 Q클래스 인스턴스
 //      각각 실제 Keyboard, Connection, Purpose 엔티티를 자바 코드로 표현한 객체
@@ -110,7 +109,7 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
 
     }
 
-    private BooleanBuilder createFilter(KeyboardFilterRequestDto filterDto) {
+    private BooleanBuilder createFilter(KeyboardFilterRequestDTO filterDto) {
 //        이건 기본 조건으로, 항상 참이 되도록 만드는 "기초 필터"
 //        왜냐하면 조건이 아무것도 없는 경우에도 .where() 안에 뭔가는 넣어야 하니까.
 //        AND로 계속 이어붙이기 위해 시작점으로 사용한 것.

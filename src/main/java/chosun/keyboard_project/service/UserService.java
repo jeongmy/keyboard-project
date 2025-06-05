@@ -2,21 +2,17 @@ package chosun.keyboard_project.service;
 
 import chosun.keyboard_project.JwtTokenProvider;
 import chosun.keyboard_project.domain.User;
-import chosun.keyboard_project.dto.*;
-import chosun.keyboard_project.exception.CustomValidationException;
+import chosun.keyboard_project.dto.userDTO.UserJoinRequestDTO;
+import chosun.keyboard_project.dto.userDTO.UserJoinResponseDTO;
+import chosun.keyboard_project.dto.userDTO.UserLoginRequestDTO;
+import chosun.keyboard_project.dto.userDTO.UserLoginResponseDTO;
 import chosun.keyboard_project.exception.DuplicateUsernameException;
 import chosun.keyboard_project.exception.LoginFailException;
 import chosun.keyboard_project.repository.UserRepository;
-import io.micrometer.common.util.StringUtils;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -38,25 +34,6 @@ public class UserService {
 
     public UserJoinResponseDTO join(UserJoinRequestDTO dto) {
 
-         Map<String, String> errors = new HashMap<>();
-
-        String username = dto.getUsername();
-        if (StringUtils.isBlank(username)) {
-            errors.put("username", "닉네임은 필수입니다.");
-        } else if (!username.matches("^[가-힣a-zA-Z0-9._]{2,20}$")) {
-            errors.put("username", "닉네임은 한글, 영문, 숫자, ., _만 사용 가능하며 공백 없이 2~20자여야 합니다.");
-        }
-
-        String userId = dto.getUserId();
-        if (StringUtils.isBlank(userId)) {
-            errors.put("userId", "아이디는 필수입니다.");
-        } else if (!userId.matches("^[a-z0-9]{4,16}$")) {
-            errors.put("userId", "아이디는 소문자와 숫자만 사용 가능하며 4~16자여야 합니다.");
-        }
-
-        if (!errors.isEmpty()) {
-            throw new CustomValidationException(errors);
-        }
 
         // userId 중복 체크
         if (userRepository.findByUserId(dto.getUserId()).isPresent()) {

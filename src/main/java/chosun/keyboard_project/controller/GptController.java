@@ -1,6 +1,6 @@
 package chosun.keyboard_project.controller;
 
-import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import chosun.keyboard_project.service.GptService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class GptController {
 //        return ResponseEntity.ok(filterDto);
 
         try {
-            KeyboardFilterRequestDto filterDto = gptService.handleUserInput(message);
+            KeyboardFilterRequestDTO filterDto = gptService.handleUserInput(message);
             return ResponseEntity.ok(filterDto);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("GPT 응답 분석에 실패했습니다.");

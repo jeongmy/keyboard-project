@@ -1,8 +1,8 @@
 package chosun.keyboard_project.service;
 
 import chosun.keyboard_project.gpt_utill.GptMapper;
-import chosun.keyboard_project.dto.GptFilterDto;
-import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import chosun.keyboard_project.dto.gptDTO.GptFilterDTO;
+import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -19,15 +19,15 @@ public class GptService {
         this.webClient = openAiWebClient;
     }
 
-    public KeyboardFilterRequestDto handleUserInput(String userInput) {
-        GptFilterDto gptFilterDto = extractFilterDto(userInput); // GPT 호출 후 응답 파싱
+    public KeyboardFilterRequestDTO handleUserInput(String userInput) {
+        GptFilterDTO gptFilterDto = extractFilterDto(userInput); // GPT 호출 후 응답 파싱
         if (gptFilterDto == null) {
             throw new IllegalStateException("GPT 응답 파싱 실패 또는 필터 정보 없음");
         }
         return GptMapper.toKeyboardFilterDto(gptFilterDto);
     }
 
-    public GptFilterDto extractFilterDto(String userInput) {
+    public GptFilterDTO extractFilterDto(String userInput) {
         String prompt = """
 당신은 키보드 추천을 위해 사용자의 자연어 요청에서 필터 값을 추출하는 어시스턴트입니다.
 
@@ -98,7 +98,7 @@ Return only a valid JSON object that reflects the user's intent.
             }
 
             // 2. content 안의 JSON 파싱
-            return mapper.readValue(contentJson, GptFilterDto.class);
+            return mapper.readValue(contentJson, GptFilterDTO.class);
 
         } catch (Exception e) {
             System.err.println("❌ GPT 응답 파싱 실패 - 사용자 입력: " + userInput);

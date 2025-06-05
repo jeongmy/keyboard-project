@@ -1,6 +1,5 @@
-package chosun.keyboard_project.dto;
+package chosun.keyboard_project.dto.keyboardDTO;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
 
 import java.util.List;

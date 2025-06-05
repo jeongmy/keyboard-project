@@ -1,6 +1,5 @@
-package chosun.keyboard_project.dto;
+package chosun.keyboard_project.dto.userDTO;
 
-import chosun.keyboard_project.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

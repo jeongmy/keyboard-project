@@ -1,11 +1,11 @@
-package chosun.keyboard_project.dto;
+package chosun.keyboard_project.dto.gptDTO;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MbtiAnswerDto {
+public class MbtiAnswerDTO {
     private String question;
     private String answer;
 

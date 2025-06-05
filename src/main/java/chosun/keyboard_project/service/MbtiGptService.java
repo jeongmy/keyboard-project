@@ -1,9 +1,9 @@
 package chosun.keyboard_project.service;
 
-import chosun.keyboard_project.dto.GptFilterDto;
-import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
-import chosun.keyboard_project.dto.MbtiAnswerDto;
-import chosun.keyboard_project.dto.MbtiGptResponseDto;
+import chosun.keyboard_project.dto.gptDTO.GptFilterDTO;
+import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
+import chosun.keyboard_project.dto.gptDTO.MbtiAnswerDTO;
+import chosun.keyboard_project.dto.gptDTO.MbtiGptResponseDTO;
 import chosun.keyboard_project.gpt_utill.GptClient;
 import chosun.keyboard_project.gpt_utill.GptMapper;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,13 +21,13 @@ public class MbtiGptService {
         this.gptClient = gptClient;
     }
 
-    public MbtiGptResponseDto sendToGptAndInterpret(List<MbtiAnswerDto> answers) {
+    public MbtiGptResponseDTO sendToGptAndInterpret(List<MbtiAnswerDTO> answers) {
         String prompt = generatePromptFromAnswers(answers);
         String gptResponse = gptClient.callGpt(prompt);
         return parseGptResponse(gptResponse);
     }
 
-    private String generatePromptFromAnswers(List<MbtiAnswerDto> answers) {
+    private String generatePromptFromAnswers(List<MbtiAnswerDTO> answers) {
         StringBuilder sb = new StringBuilder();
         // [1] 시스템 역할 정의
         sb.append("당신은 키보드 추천을 위해 사용자의 MBTI 성향을 바탕으로 필터 값을 추출하는 어시스턴트입니다.\n");
@@ -50,7 +50,7 @@ public class MbtiGptService {
         sb.append("다음은 사용자의 MBTI 성향을 파악하기 위한 12개의 질문과 응답입니다:\n\n");
 
         for (int i = 0; i < answers.size(); i++) {
-            MbtiAnswerDto a = answers.get(i);
+            MbtiAnswerDTO a = answers.get(i);
             sb.append((i + 1)).append(". 질문: ").append(a.getQuestion()).append("\n");
             sb.append("   응답: ").append(a.getAnswer()).append("\n\n");
         }
@@ -62,7 +62,7 @@ public class MbtiGptService {
         return sb.toString();
     }
 
-    private MbtiGptResponseDto parseGptResponse(String json) {
+    private MbtiGptResponseDTO parseGptResponse(String json) {
         try {
             System.out.println("✅ GPT Content 원본:");
             System.out.println(json);
@@ -81,16 +81,16 @@ public class MbtiGptService {
 
             // 2. filter 부분 파싱 → GptFilterDto
             JsonNode filterNode = root.path("filter");
-            GptFilterDto gptFilterDto = mapper.treeToValue(filterNode, GptFilterDto.class);
+            GptFilterDTO gptFilterDto = mapper.treeToValue(filterNode, GptFilterDTO.class);
 
             // 3. analysis 텍스트 추출
             String analysis = root.path("analysis").asText();
 
             // 4. GptFilterDto → KeyboardFilterRequestDto 변환
-            KeyboardFilterRequestDto keyboardFilterDto = GptMapper.toKeyboardFilterDto(gptFilterDto);
+            KeyboardFilterRequestDTO keyboardFilterDto = GptMapper.toKeyboardFilterDto(gptFilterDto);
 
             // 5. MbtiGptResponseDto 구성
-            MbtiGptResponseDto result = new MbtiGptResponseDto();
+            MbtiGptResponseDTO result = new MbtiGptResponseDTO();
             result.setFilter(keyboardFilterDto);
             result.setAnalysis(analysis);
 

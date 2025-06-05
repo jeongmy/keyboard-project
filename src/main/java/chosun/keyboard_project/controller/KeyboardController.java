@@ -1,21 +1,12 @@
 package chosun.keyboard_project.controller;
 
-import chosun.keyboard_project.domain.Keyboard;
-import chosun.keyboard_project.dto.KeyboardDto;
-import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import chosun.keyboard_project.dto.keyboardDTO.KeyboardDto;
+import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import chosun.keyboard_project.dto.PagedResponseDTO;
-import chosun.keyboard_project.repository.KeyboardRepository;
-import oracle.ucp.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import chosun.keyboard_project.service.KeyboardService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/keyboards")
@@ -44,7 +35,7 @@ public class KeyboardController {
 //  ❌ DTO가 아예 null로 들어옴	컨트롤러	400 Bad Request
     @PostMapping("/filter/qdsl")
     public ResponseEntity<PagedResponseDTO<KeyboardDto>> filterKeyboardsByQdsl(
-            @RequestBody KeyboardFilterRequestDto filterDto,
+            @RequestBody KeyboardFilterRequestDTO filterDto,
             @RequestParam(name= "sort",defaultValue = "DEFAULT") String sort,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "5") int size

@@ -1,11 +1,10 @@
 package chosun.keyboard_project.service;
 
-import chosun.keyboard_project.JwtTokenProvider;
 import chosun.keyboard_project.domain.Connection;
 import chosun.keyboard_project.domain.Keyboard;
 import chosun.keyboard_project.domain.Purpose;
-import chosun.keyboard_project.dto.KeyboardDto;
-import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import chosun.keyboard_project.dto.keyboardDTO.KeyboardDto;
+import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import chosun.keyboard_project.repository.KeyboardRepository;
@@ -14,11 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class KeyboardService {
@@ -94,7 +89,7 @@ public class KeyboardService {
         );
     }
 
-    public Page<KeyboardDto> filterKeyboardsByQdsl(KeyboardFilterRequestDto filterDto, String sort, int page, int size){
+    public Page<KeyboardDto> filterKeyboardsByQdsl(KeyboardFilterRequestDTO filterDto, String sort, int page, int size){
 /*      QueryDSL을 사용한 필터링
         List<Keyboard> keyboards = keyboardRepository.findByQdslFilter(filterDto);
         if(keyboards.isEmpty()){

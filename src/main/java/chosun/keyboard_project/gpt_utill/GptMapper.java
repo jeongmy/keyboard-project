@@ -1,13 +1,13 @@
 package chosun.keyboard_project.gpt_utill;
 
-import chosun.keyboard_project.dto.GptFilterDto;
-import chosun.keyboard_project.dto.KeyboardFilterRequestDto;
+import chosun.keyboard_project.dto.gptDTO.GptFilterDTO;
+import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import chosun.keyboard_project.dto.PriceRangeParser;
 
 public class GptMapper {
 
-    public static KeyboardFilterRequestDto toKeyboardFilterDto(GptFilterDto gpt) {
-        KeyboardFilterRequestDto dto = new KeyboardFilterRequestDto();
+    public static KeyboardFilterRequestDTO toKeyboardFilterDto(GptFilterDTO gpt) {
+        KeyboardFilterRequestDTO dto = new KeyboardFilterRequestDTO();
 
         dto.setWeightLabels(gpt.getWeightLabels());
         dto.setConnections(gpt.getConnections());

@@ -1,4 +1,4 @@
-package chosun.keyboard_project.dto;
+package chosun.keyboard_project.dto.userDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

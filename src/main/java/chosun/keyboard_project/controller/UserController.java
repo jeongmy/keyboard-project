@@ -2,21 +2,18 @@ package chosun.keyboard_project.controller;
 
 
 import chosun.keyboard_project.domain.User;
-import chosun.keyboard_project.dto.*;
+import chosun.keyboard_project.dto.userDTO.*;
 import chosun.keyboard_project.repository.UserRepository;
 import chosun.keyboard_project.service.CustomUserDetails;
 import chosun.keyboard_project.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 
 @RestController
