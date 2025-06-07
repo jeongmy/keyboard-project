@@ -93,13 +93,13 @@ public class UserController {
     }
 
     @GetMapping("/check-username") // 사용가능하면 True 아니면 False 반환
-    public ResponseEntity<Boolean> checkUsername(@RequestParam("username") String username){
-        return ResponseEntity.ok(!userRepository.findByUsername(username).isPresent());
+    public ResponseEntity<Boolean> checkUsername(@Valid @RequestBody UsernameCheckRequestDTO dto){
+        return ResponseEntity.ok(!userRepository.findByUsername(dto.getUsername()).isPresent());
     }
 
     @GetMapping("/check-id")
-    public ResponseEntity<Boolean> checkUserId(@RequestParam("userId") String userId){
-        return ResponseEntity.ok(!userRepository.findByUserId(userId).isPresent());
+    public ResponseEntity<Boolean> checkUserId(@Valid @RequestBody UserIdCheckRequestDTO dto){
+        return ResponseEntity.ok(!userRepository.findByUserId(dto.getUserId()).isPresent());
     }
 
     @GetMapping("/check-email")

@@ -19,9 +19,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateUsernameException.class)
     public ResponseEntity<Map<String, Object>> handleDuplicateUsername(DuplicateUsernameException e){
         Map<String, Object> body = new HashMap<>();
+
+        body.put("code", 409);
         body.put("error", "Duplicate Username");
         body.put("message", e.getMessage());
-        body.put("code", 409);
+
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
 
     }
@@ -29,18 +31,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(LoginFailException.class)
     public ResponseEntity<Map<String, Object>> handleLoginFailed(LoginFailException e) {
         Map<String, Object> body = new HashMap<>();
+
+        body.put("code", 401); // Unauthorized
         body.put("error", "Login Failed");
         body.put("message", e.getMessage());
-        body.put("code", 401); // Unauthorized
+
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(EntityNotFoundException e){
         Map<String, Object> body = new HashMap<>();
+
+        body.put("code", 404);
         body.put("error", "NotFound");
         body.put("message", e.getMessage());
-        body.put("code", 404);
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(body);
     }
@@ -48,9 +54,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, Object>> handleBadRequset(RuntimeException e){
         Map<String, Object> body = new HashMap<>();
+
+        body.put("code",400);
         body.put("error", "BadRequest");
         body.put("message", e.getMessage());
-        body.put("code",400);
+
         System.out.println(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
@@ -69,9 +77,10 @@ public class GlobalExceptionHandler {
         });
 
         Map<String, Object> body = new HashMap<>();
+        body.put("code", 400);
         body.put("error", "Validation Failed");
         body.put("message", errors);
-        body.put("code", 400);
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
 
     }
