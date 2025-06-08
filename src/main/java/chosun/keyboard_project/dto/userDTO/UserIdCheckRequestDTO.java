@@ -1,6 +1,7 @@
 package chosun.keyboard_project.dto.userDTO;
 
-import chosun.keyboard_project.annotation.NotBlankPattern;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,12 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserIdCheckRequestDTO {
 
-    @NotBlankPattern(
-            pattern = "^[a-z0-9]{4,16}$",
-            blankMessage = "아이디는 필수입니다.",
-            patternMessage = "아이디는 소문자와 숫자만 사용 가능하며 4~16자여야 합니다.",
-            propertyName = "userId"
-
+    @NotBlank(message = "소문자와 숫자만 사용하여 4~16자 내의 아이디를 입력해 주세요.")
+    @Pattern(
+            regexp = "^[a-z0-9]{4,16}$",
+            message = "소문자와 숫자만 사용하여 4~16자 내의 아이디를 입력해 주세요."
     )
     private String userId;
 }

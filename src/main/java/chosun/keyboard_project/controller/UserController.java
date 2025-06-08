@@ -37,17 +37,8 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<?> join(@Valid @RequestBody UserJoinRequestDTO dto, BindingResult bindingResult) {
+    public ResponseEntity<UserJoinResponseDTO> join(@Valid @RequestBody UserJoinRequestDTO dto) {
         System.out.println("회원가입 요청 들어옴: " + dto.getUsername());
-
-        // 유효성 검증 실패 시 처리
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errors.put(error.getField(), error.getDefaultMessage());
-            }
-            return ResponseEntity.badRequest().body(errors);
-        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.join(dto));
     }
