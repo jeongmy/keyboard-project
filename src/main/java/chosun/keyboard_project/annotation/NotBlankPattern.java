@@ -10,12 +10,13 @@ import java.lang.annotation.*;
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NotBlankPattern {
-
     String message() default "형식이 올바르지 않습니다.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    String pattern();
+    String pattern(); // 정규식
     String blankMessage() default "값은 필수입니다.";
     String patternMessage() default "형식이 올바르지 않습니다.";
+
+    String propertyName(); //  필드명을 추가로 명시
 }
