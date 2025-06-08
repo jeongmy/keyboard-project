@@ -24,7 +24,6 @@ public class NotBlankPatternValidator implements ConstraintValidator<NotBlankPat
             context.disableDefaultConstraintViolation();
             context
                     .buildConstraintViolationWithTemplate(blankMessage)
-                    .addPropertyNode(propertyName) //  필드에 바인딩
                     .addConstraintViolation();
             return false;
         }
@@ -33,7 +32,6 @@ public class NotBlankPatternValidator implements ConstraintValidator<NotBlankPat
             context.disableDefaultConstraintViolation();
             context
                     .buildConstraintViolationWithTemplate(patternMessage)
-                    .addPropertyNode(propertyName)
                     .addConstraintViolation();
             return false;
         }
