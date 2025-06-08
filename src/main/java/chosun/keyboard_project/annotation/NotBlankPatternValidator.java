@@ -31,7 +31,10 @@ public class NotBlankPatternValidator implements ConstraintValidator<NotBlankPat
 
         if (!value.matches(pattern)) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(patternMessage).addConstraintViolation();
+            context
+                    .buildConstraintViolationWithTemplate(patternMessage)
+                    .addPropertyNode(propertyName)
+                    .addConstraintViolation();
             return false;
         }
 
