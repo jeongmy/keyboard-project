@@ -1,9 +1,8 @@
 package chosun.keyboard_project.repository;
 
 import chosun.keyboard_project.domain.Keyboard;
-import chosun.keyboard_project.domain.QConnection;
 import chosun.keyboard_project.domain.QKeyboard;
-import chosun.keyboard_project.domain.QPurpose;
+import chosun.keyboard_project.domain.QKeyboardVariant;
 import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import chosun.keyboard_project.dto.PriceRangeDTO;
 import com.querydsl.core.BooleanBuilder;
@@ -54,17 +53,16 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
 //        Keyboard	  실제 DB와 매핑된 JPA 엔티티	    ❌ 불가능 (쿼리용 아님)
 //        QKeyboard	  QueryDSL 전용 쿼리 표현 객체	    ✅ 가능 (쿼리 작성용)
         QKeyboard keyboard = QKeyboard.keyboard;
-        QConnection connection = QConnection.connection;
-        QPurpose purpose = QPurpose.purpose;
+        QKeyboardVariant variant = QKeyboardVariant.keyboardVariant;
 
         BooleanBuilder builder = createFilter(filterDto);
 
         // 🔹 정렬 조건 정의
         OrderSpecifier<?> orderSpecifier;
         if ("PRICE_ASC".equalsIgnoreCase(sort)) {
-            orderSpecifier = keyboard.price.asc();
+            orderSpecifier = variant.price.asc();
         } else if ("PRICE_DESC".equalsIgnoreCase(sort)) {
-            orderSpecifier = keyboard.price.desc();
+            orderSpecifier = variant.price.desc();
         } else {
             orderSpecifier = keyboard.id.asc(); // 기본 정렬
         }
@@ -73,12 +71,12 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
         // 🔹 1. 실제 해당 페이지에 해당하는 데이터 조회
         List<Keyboard> content = queryFactory
                 .selectFrom(keyboard)
-                .leftJoin(keyboard.connections, connection)
-                .leftJoin(keyboard.purposes, purpose)
-                .where(builder)
+                .leftJoin(keyboard.variants, variant).fetchJoin()
                 .distinct()
-                .offset(pageable.getOffset()) // 몇 번째부터
-                .limit(pageable.getPageSize())// 몇 개 가져올지
+                .where(builder)
+                .orderBy(orderSpecifier)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
         //  .leftJoin(소스 컬렉션, 별칭)
         //  "keyboard가 가지고 있는 connections 컬렉션을
@@ -98,18 +96,21 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
 //        keyboard.connections는 중간 테이블 먼저 조인하고,
 //                connection은 그 중간 테이블 통해 실제 대상 조인한다 → 맞습니다.
         Long total = queryFactory
-                .select(keyboard.count())  // ✅ 핵심
+                .select(keyboard.countDistinct())
                 .from(keyboard)
-                .leftJoin(keyboard.connections, connection)
-                .leftJoin(keyboard.purposes, purpose)
+                .leftJoin(keyboard.variants, variant)
                 .where(builder)
-                .fetchOne();  // Long 값 하나만 나옴
+                .fetchOne(); // Long 값 하나만 나옴
         // fetchOne()은 조회 결과가 없으면 null을 반환함 때문에 return에서 null 체크 후 아니면 그대로, 맞으면 0 리턴
         return new PageImpl<>(content, pageable, total != null ? total : 0);
 
     }
 
     private BooleanBuilder createFilter(KeyboardFilterRequestDTO filterDto) {
+
+        QKeyboard keyboard = QKeyboard.keyboard;
+        QKeyboardVariant variant = QKeyboardVariant.keyboardVariant;
+
 //        이건 기본 조건으로, 항상 참이 되도록 만드는 "기초 필터"
 //        왜냐하면 조건이 아무것도 없는 경우에도 .where() 안에 뭔가는 넣어야 하니까.
 //        AND로 계속 이어붙이기 위해 시작점으로 사용한 것.
@@ -117,46 +118,41 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
         BooleanBuilder builder = new BooleanBuilder();
 
         if (filterDto.getWeightLabels() != null && !filterDto.getWeightLabels().isEmpty()) {
-            builder.and(QKeyboard.keyboard.weightLabel.in(filterDto.getWeightLabels()));
+            builder.and(keyboard.weightLabel.in(filterDto.getWeightLabels()));
         }
         if (filterDto.getConnections() != null && !filterDto.getConnections().isEmpty()) {
-            builder.and(QConnection.connection.label.in(filterDto.getConnections()));
+            builder.and(keyboard.connection.in(filterDto.getConnections()));
         }
         if (filterDto.getPurposes() != null && !filterDto.getPurposes().isEmpty()) {
-            builder.and(QPurpose.purpose.label.in(filterDto.getPurposes()));
+            builder.and(variant.purpose.in(filterDto.getPurposes()));
         }
-//        if (filterDto.getMaterials() != null && !filterDto.getMaterials().isEmpty()) {
-//            builder.and(QKeyboard.keyboard.material.in(filterDto.getMaterials()));
-//        }
         if (filterDto.getLayouts() != null && !filterDto.getLayouts().isEmpty()) {
-            builder.and(QKeyboard.keyboard.layout.in(filterDto.getLayouts()));
+            builder.and(keyboard.layout.in(filterDto.getLayouts()));
         }
         if (filterDto.getBacklights() != null && !filterDto.getBacklights().isEmpty()) {
-            builder.and(QKeyboard.keyboard.backlight.in(filterDto.getBacklights()));
+            builder.and(keyboard.backlight.in(filterDto.getBacklights()));
         }
         if (filterDto.getSwitchTypes() != null && !filterDto.getSwitchTypes().isEmpty()) {
-            builder.and(QKeyboard.keyboard.switchType.in(filterDto.getSwitchTypes()));
+            builder.and(keyboard.switchType.in(filterDto.getSwitchTypes()));
         }
         if (filterDto.getManufacturers() != null && !filterDto.getManufacturers().isEmpty()) {
-            builder.and(QKeyboard.keyboard.manufacturer.in(filterDto.getManufacturers()));
+            builder.and(keyboard.manufacturer.in(filterDto.getManufacturers()));
         }
-//        if (filterDto.getSounds() != null && !filterDto.getSounds().isEmpty()) {
-//            builder.and(QKeyboard.keyboard.sound.in(filterDto.getSounds()));
-//        }
         if (filterDto.getPriceRanges() != null && !filterDto.getPriceRanges().isEmpty()) {
             BooleanBuilder priceBuilder = new BooleanBuilder();
             for (PriceRangeDTO range : filterDto.getPriceRanges()) {
                 BooleanBuilder singleRange = new BooleanBuilder();
                 if (range.getMin() != null) {
-                    singleRange.and(QKeyboard.keyboard.price.goe(range.getMin()));
+                    singleRange.and(variant.price.goe(range.getMin()));
                 }
                 if (range.getMax() != null) {
-                    singleRange.and(QKeyboard.keyboard.price.loe(range.getMax()));
+                    singleRange.and(variant.price.loe(range.getMax()));
                 }
                 priceBuilder.or(singleRange);
             }
             builder.and(priceBuilder);
         }
+
 
         return builder;
     }

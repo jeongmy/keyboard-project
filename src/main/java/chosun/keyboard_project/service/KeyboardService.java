@@ -1,8 +1,6 @@
 package chosun.keyboard_project.service;
 
-import chosun.keyboard_project.domain.Connection;
 import chosun.keyboard_project.domain.Keyboard;
-import chosun.keyboard_project.domain.Purpose;
 import chosun.keyboard_project.dto.keyboardDTO.KeyboardDto;
 import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -58,34 +56,19 @@ public class KeyboardService {
     // 엔티티를 DTO로 변환하는 메서드
     private KeyboardDto convertToDto(Keyboard keyboard) {
 
-        List<String> connectionLabels = keyboard.getConnections().stream().
-                map(Connection::getLabel).toList();
-
-        List<String> purposeLabels = keyboard.getPurposes().stream().
-                map(Purpose::getLabel).toList();
-
         return new KeyboardDto(
                 keyboard.getId(),
                 keyboard.getName(),
                 keyboard.getManufacturer(),
-                keyboard.getHousingColor(),
-                keyboard.getSwitchType(),
-                keyboard.getSwitchName(),
-                keyboard.getKeyPressureValue(),
-                keyboard.getKeyPressureLabel(),
                 keyboard.getLayout(),
                 keyboard.getKeyCount(),
-                keyboard.getBacklight(),
+                keyboard.getConnection(),
                 keyboard.getWeightValue(),
                 keyboard.getWeightLabel(),
-                keyboard.getPrice(),
-                keyboard.getImageUrl(),
-                keyboard.getPurchaseLink1(),
-                keyboard.getPurchaseLink2(),
-                keyboard.getPurchaseLink3(),
-                connectionLabels,
-                purposeLabels
-
+                keyboard.getBacklight(),
+                keyboard.getSwitchType(),
+                keyboard.getHousingColor(),
+                keyboard.getVariants()
         );
     }
 
