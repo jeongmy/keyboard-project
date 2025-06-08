@@ -13,7 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -32,8 +37,18 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<UserJoinResponseDTO> join(@Valid @RequestBody UserJoinRequestDTO dto) {
+    public ResponseEntity<?> join(@Valid @RequestBody UserJoinRequestDTO dto, BindingResult bindingResult) {
         System.out.println("회원가입 요청 들어옴: " + dto.getUsername());
+
+        // 유효성 검증 실패 시 처리
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.join(dto));
     }
 
