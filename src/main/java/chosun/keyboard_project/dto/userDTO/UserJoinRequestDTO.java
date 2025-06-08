@@ -1,6 +1,5 @@
 package chosun.keyboard_project.dto.userDTO;
 
-import chosun.keyboard_project.annotation.NotBlankPattern;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -13,17 +12,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserJoinRequestDTO {
 
-    @NotBlankPattern(
-            pattern = "^[가-힣a-zA-Z0-9._]{2,20}$",
-            blankMessage = "닉네임은 필수입니다.",
-            patternMessage = "닉네임은 한글, 영문, 숫자, ., _만 사용 가능하며 공백 없이 2~20자여야 합니다."
+    @NotBlank(message = "한글, 영문, 숫자, ., _을 사용하여 공백 없이 2~20자 내로 닉네임을 입력해 주세요.")
+    @Pattern(
+            regexp = "^[가-힣a-zA-Z0-9._]{2,20}$",
+            message = "한글, 영문, 숫자, ., _을 사용하여 공백 없이 2~20자 내로 닉네임을 입력해 주세요."
     )
     private String username; // 닉네임
 
-    @NotBlankPattern(
-            pattern = "^[a-z0-9]{4,16}$",
-            blankMessage = "아이디는 필수입니다.",
-            patternMessage = "아이디는 소문자와 숫자만 사용 가능하며 4~16자여야 합니다."
+    @NotBlank(message = "소문자와 숫자만 사용하여 4~16자 내의 아이디를 입력해 주세요.")
+    @Pattern(
+            regexp = "^[a-z0-9]{4,16}$",
+            message = "소문자와 숫자만 사용하여 4~16자 내의 아이디를 입력해 주세요."
     )
     private String userId; // 로그인용 아이디
 
