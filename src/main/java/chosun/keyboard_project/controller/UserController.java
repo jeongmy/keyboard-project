@@ -135,22 +135,11 @@ public class UserController {
 
     @PostMapping("/check-username") // 사용가능하면 True 아니면 False 반환
     public ResponseEntity<Boolean> checkUsername(@Valid @RequestBody UsernameCheckRequestDTO dto){
-
-        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
-            System.out.println(dto.getUsername() + "는 이미 사용 중인 닉네임입니다.");
-            throw new DuplicateUsernameException(dto.getUsername() + "는 이미 사용 중인 닉네임입니다.");
-        }
-
         return ResponseEntity.ok(!userRepository.findByUsername(dto.getUsername()).isPresent());
     }
 
     @PostMapping("/check-id")
     public ResponseEntity<Boolean> checkUserId(@Valid @RequestBody UserIdCheckRequestDTO dto){
-        if(userRepository.findByUserId(dto.getUserId()).isPresent()) {
-            System.out.println(dto.getUserId() + "는 이미 존재하는 ID: 회원가입 실패");
-            throw new DuplicateUsernameException(dto.getUserId() + "는 이미 존재하는 ID입니다.");
-        }
-
         return ResponseEntity.ok(!userRepository.findByUserId(dto.getUserId()).isPresent());
 
     }
