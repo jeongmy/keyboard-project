@@ -3,6 +3,7 @@ package chosun.keyboard_project.controller;
 
 import chosun.keyboard_project.domain.User;
 import chosun.keyboard_project.dto.userDTO.*;
+import chosun.keyboard_project.exception.DuplicateUsernameException;
 import chosun.keyboard_project.repository.UserRepository;
 import chosun.keyboard_project.service.CustomUserDetails;
 import chosun.keyboard_project.service.UserService;
@@ -37,8 +38,42 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<UserJoinResponseDTO> join(@Valid @RequestBody UserJoinRequestDTO dto) {
+    public ResponseEntity<?> join(@Valid @RequestBody UserJoinRequestDTO dto, BindingResult bindingResult) {
         System.out.println("회원가입 요청 들어옴: " + dto.getUsername());
+
+        Map<String, String> errors = new HashMap<>();
+
+        if (bindingResult.hasErrors()) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+        }
+
+        if (userRepository.findByUserId(dto.getUserId()).isPresent()) {
+            errors.put("userId", "이미 존재하는 ID입니다.");
+        }
+
+        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+            errors.put("email", "이미 등록된 이메일입니다.");
+        }
+
+        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
+            errors.put("username", "이미 사용 중인 닉네임입니다.");
+        }
+
+        if (!dto.getPassword().equals(dto.getPasswordConfirm())) {
+            errors.put("passwordConfirm", "비밀번호가 일치하지 않습니다.");
+        }
+
+        // 오류 하나라도 있으면 응답 반환
+        if (!errors.isEmpty()) {
+            Map<String, Object> body = new HashMap<>();
+            body.put("code", 400);
+            body.put("error", "Validation Failed");
+            body.put("message", errors); // 여기에 field error map
+
+            return ResponseEntity.badRequest().body(body);
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.join(dto));
     }
@@ -98,17 +133,18 @@ public class UserController {
 
     }
 
-    @GetMapping("/check-username") // 사용가능하면 True 아니면 False 반환
+    @PostMapping("/check-username") // 사용가능하면 True 아니면 False 반환
     public ResponseEntity<Boolean> checkUsername(@Valid @RequestBody UsernameCheckRequestDTO dto){
         return ResponseEntity.ok(!userRepository.findByUsername(dto.getUsername()).isPresent());
     }
 
-    @GetMapping("/check-id")
+    @PostMapping("/check-id")
     public ResponseEntity<Boolean> checkUserId(@Valid @RequestBody UserIdCheckRequestDTO dto){
         return ResponseEntity.ok(!userRepository.findByUserId(dto.getUserId()).isPresent());
+
     }
 
-    @GetMapping("/check-email")
+    @PostMapping("/check-email")
     public ResponseEntity<Boolean> checkEmail(@RequestParam("userEmail") String userEmail){
         return ResponseEntity.ok(!userRepository.findByEmail(userEmail).isPresent());
     }
