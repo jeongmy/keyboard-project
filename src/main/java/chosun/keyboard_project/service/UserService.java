@@ -34,28 +34,6 @@ public class UserService {
 
     public UserJoinResponseDTO join(UserJoinRequestDTO dto) {
 
-        // userId 중복 체크
-        if (userRepository.findByUserId(dto.getUserId()).isPresent()) {
-            System.out.println(dto.getUserId() + "는 이미 존재하는 ID: 회원가입 실패");
-            throw new DuplicateUsernameException(dto.getUserId() + "는 이미 존재하는 ID입니다.");
-        }
-
-        // 이메일 중복 체크
-        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-            System.out.println(dto.getEmail() + "는 이미 등록된 이메일입니다.");
-            throw new DuplicateUsernameException(dto.getEmail() + "는 이미 등록된 이메일입니다.");
-        }
-
-        // 닉네임 중복 체크 (필요 시)
-        if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
-            System.out.println(dto.getUsername() + "는 이미 사용 중인 닉네임입니다.");
-            throw new DuplicateUsernameException(dto.getUsername() + "는 이미 사용 중인 닉네임입니다.");
-        }
-
-        if(!dto.getPassword().equals(dto.getPasswordConfirm())){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
-
         User user = User.builder()
                 .username(dto.getUsername())
                 .userId(dto.getUserId())
