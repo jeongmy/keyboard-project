@@ -2,9 +2,12 @@ package chosun.keyboard_project.controller;
 
 
 import chosun.keyboard_project.domain.User;
+import chosun.keyboard_project.dto.CommentRequestDTO;
+import chosun.keyboard_project.dto.CommentResponseDTO;
 import chosun.keyboard_project.dto.userDTO.*;
 import chosun.keyboard_project.exception.DuplicateUsernameException;
 import chosun.keyboard_project.repository.UserRepository;
+import chosun.keyboard_project.service.CommentService;
 import chosun.keyboard_project.service.CustomUserDetails;
 import chosun.keyboard_project.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
@@ -19,6 +23,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -29,12 +34,15 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CommentService commentService;
 
     @Autowired
-    public UserController(UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public UserController(UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder,
+                          CommentService commentService){
         this.userService = userService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.commentService = commentService;
     }
 
     @PostMapping("/join")
@@ -161,6 +169,26 @@ public class UserController {
         System.out.println("임시 비밀번호 요청 들어옴");
         userService.resetPassword(dto.getUserEmail());
         return ResponseEntity.ok("임시 비밀번호가 이메일로 전송되었습니다.");
+    }
+
+    @PostMapping("/comments")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> writeComment(
+            @RequestBody @Valid CommentRequestDTO requestDto,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        commentService.writeComment(requestDto, userDetails.getUser());
+        return ResponseEntity.ok("댓글 작성 완료.");
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<String> deleteComment(
+            @PathVariable(name = "commentId") Long commentId,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        commentService.deleteComment(commentId, userDetails.getUser());
+        return ResponseEntity.ok("댓글이 삭제되었습니다.");
     }
 
 }

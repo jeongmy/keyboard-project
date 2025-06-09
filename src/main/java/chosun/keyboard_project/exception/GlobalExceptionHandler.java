@@ -1,8 +1,5 @@
-package chosun.keyboard_project;
+package chosun.keyboard_project.exception;
 
-import chosun.keyboard_project.exception.CustomValidationException;
-import chosun.keyboard_project.exception.DuplicateUsernameException;
-import chosun.keyboard_project.exception.LoginFailException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

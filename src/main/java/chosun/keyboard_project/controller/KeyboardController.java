@@ -1,22 +1,29 @@
 package chosun.keyboard_project.controller;
 
+import chosun.keyboard_project.dto.CommentResponseDTO;
 import chosun.keyboard_project.dto.keyboardDTO.KeyboardDto;
 import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import chosun.keyboard_project.dto.PagedResponseDTO;
+import chosun.keyboard_project.repository.CommentRepository;
+import chosun.keyboard_project.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import chosun.keyboard_project.service.KeyboardService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/keyboards")
 public class KeyboardController {
 
     private final KeyboardService keyboardService;
+    private final CommentService commentService;
 
     @Autowired
-    public KeyboardController(KeyboardService keyboardService) {
+    public KeyboardController(KeyboardService keyboardService, CommentService commentService) {
         this.keyboardService = keyboardService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/hello")
@@ -58,6 +65,10 @@ public class KeyboardController {
         return ResponseEntity.ok(new PagedResponseDTO<>(keyboardService.searchKeyboards(statement, sort, page, size)));
     }
 
+    @GetMapping("/{keyboardId}/comments")
+    public ResponseEntity<List<CommentResponseDTO>> getCommentsByKeyboard(@PathVariable(name = "keyboardId") Long keyboardId) {
+        return ResponseEntity.ok(commentService.getCommentsByKeyboard(keyboardId));
+    }
 
 
 }
