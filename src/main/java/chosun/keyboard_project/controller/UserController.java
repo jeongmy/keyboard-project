@@ -133,7 +133,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/check-username") // 사용가능하면 True 아니면 False 반환
+    @PostMapping("/check-username") // 사용가능하면 True 아니면 False 반환
     public ResponseEntity<Boolean> checkUsername(@Valid @RequestBody UsernameCheckRequestDTO dto){
 
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
@@ -144,7 +144,7 @@ public class UserController {
         return ResponseEntity.ok(!userRepository.findByUsername(dto.getUsername()).isPresent());
     }
 
-    @GetMapping("/check-id")
+    @PostMapping("/check-id")
     public ResponseEntity<Boolean> checkUserId(@Valid @RequestBody UserIdCheckRequestDTO dto){
         if(userRepository.findByUserId(dto.getUserId()).isPresent()) {
             System.out.println(dto.getUserId() + "는 이미 존재하는 ID: 회원가입 실패");
@@ -155,7 +155,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/check-email")
+    @PostMapping("/check-email")
     public ResponseEntity<Boolean> checkEmail(@RequestParam("userEmail") String userEmail){
         return ResponseEntity.ok(!userRepository.findByEmail(userEmail).isPresent());
     }
