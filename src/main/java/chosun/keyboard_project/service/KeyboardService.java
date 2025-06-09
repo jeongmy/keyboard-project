@@ -87,8 +87,13 @@ public class KeyboardService {
         Page<Keyboard> keyboards = keyboardRepository.findByQdslFilter(filterDto, sort, pageable);
 
         return keyboards.map(this::convertToDto);
+    }
 
+    public Page<KeyboardDto> searchKeyboards(String statement, String sort, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Keyboard> keyboards = keyboardRepository.searchKeyboards(statement, sort, pageable);
 
+        return keyboards.map(this::convertToDto);
     }
 
 

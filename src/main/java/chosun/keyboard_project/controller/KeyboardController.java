@@ -43,16 +43,20 @@ public class KeyboardController {
         return ResponseEntity.ok(new PagedResponseDTO<>(keyboardService.filterKeyboardsByQdsl(filterDto, sort, page, size)));
     }
 
-//    @PostMapping("/search")
-//    public ResponseEntity<PagedResponseDTO<KeyboardDto>> search(
-//            @RequestParam(name = "statement") String statement,
-//            @RequestParam(name = "sort", defaultValue = "DEFAULT") String sort,
-//            @RequestParam(name = "page", defaultValue = "0") int page,
-//            @RequestParam(name = "size", defaultValue = "5") int size
-//    ){
-//        Pageable pageable = PageRequest.of(page, size);
-//        keyboardService.search(statement, pageable);
-//    }
+    @GetMapping("/search")
+    public ResponseEntity<PagedResponseDTO<KeyboardDto>> searchKeyboards(
+            @RequestParam(name = "statement") String statement,
+            @RequestParam(name= "sort",defaultValue = "DEFAULT") String sort,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+    ) {
+
+        if (statement == null || statement.trim().isEmpty()) {
+            throw new IllegalArgumentException("검색어는 필수 입력값입니다.");
+        }
+
+        return ResponseEntity.ok(new PagedResponseDTO<>(keyboardService.searchKeyboards(statement, sort, page, size)));
+    }
 
 
 

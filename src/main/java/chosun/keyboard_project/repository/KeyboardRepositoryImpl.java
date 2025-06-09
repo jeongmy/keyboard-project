@@ -7,6 +7,8 @@ import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import chosun.keyboard_project.dto.PriceRangeDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
@@ -156,4 +158,82 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
 
         return builder;
     }
+
+    @Override
+    public Page<Keyboard> searchKeyboards(String statement, String sort, Pageable pageable) {
+        QKeyboard keyboard = QKeyboard.keyboard;
+        QKeyboardVariant variant = QKeyboardVariant.keyboardVariant;
+
+        JPAQuery<Keyboard> query = queryFactory
+                .selectFrom(keyboard)
+                .leftJoin(keyboard.variants, variant).fetchJoin()
+                .distinct()
+                .where(buildSearchCondition(statement, keyboard, variant));
+
+        // 정렬 처리
+        switch (sort) {
+            case "PRICE_ASC" -> query.orderBy(variant.price.asc());
+            case "PRICE_DESC" -> query.orderBy(variant.price.desc());
+            default -> query.orderBy(keyboard.id.desc());
+        }
+
+        // 페이징
+        long total = query.fetch().size(); // 전체 개수 미리 fetch
+
+        List<Keyboard> results = query
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        return new PageImpl<>(results, pageable, total);
+    }
+
+    private BooleanBuilder buildSearchCondition(String statement, QKeyboard keyboard, QKeyboardVariant variant) {
+        BooleanBuilder condition = new BooleanBuilder();
+
+        // 전체 문장 OR
+        BooleanBuilder fullText = new BooleanBuilder();
+        fullText.or(keyboard.name.containsIgnoreCase(statement));
+        fullText.or(keyboard.manufacturer.containsIgnoreCase(statement));
+        fullText.or(keyboard.layout.containsIgnoreCase(statement));
+        fullText.or(keyboard.keyCount.containsIgnoreCase(statement));
+        fullText.or(keyboard.connection.containsIgnoreCase(statement));
+        fullText.or(keyboard.weightValue.containsIgnoreCase(statement));
+        fullText.or(keyboard.weightLabel.containsIgnoreCase(statement));
+        fullText.or(keyboard.backlight.containsIgnoreCase(statement));
+        fullText.or(keyboard.housingColor.containsIgnoreCase(statement));
+        fullText.or(variant.purpose.containsIgnoreCase(statement));
+        fullText.or(variant.switchType.containsIgnoreCase(statement));
+        fullText.or(variant.switchName.containsIgnoreCase(statement));
+        fullText.or(variant.keyPressureValue.containsIgnoreCase(statement));
+        fullText.or(variant.keyPressureLabel.containsIgnoreCase(statement));
+
+        // 단어별: 단어 하나당 전체 속성 OR → 단어들끼리는 AND
+        String[] words = statement.trim().split("\\s+");
+        BooleanBuilder wordWiseAnd = new BooleanBuilder();
+        for (String word : words) {
+            BooleanBuilder orPerWord = new BooleanBuilder();
+            orPerWord.or(keyboard.name.containsIgnoreCase(word));
+            orPerWord.or(keyboard.manufacturer.containsIgnoreCase(word));
+            orPerWord.or(keyboard.layout.containsIgnoreCase(word));
+            orPerWord.or(keyboard.keyCount.containsIgnoreCase(word));
+            orPerWord.or(keyboard.connection.containsIgnoreCase(word));
+            orPerWord.or(keyboard.weightValue.containsIgnoreCase(word));
+            orPerWord.or(keyboard.weightLabel.containsIgnoreCase(word));
+            orPerWord.or(keyboard.backlight.containsIgnoreCase(word));
+            orPerWord.or(keyboard.housingColor.containsIgnoreCase(word));
+            orPerWord.or(variant.purpose.containsIgnoreCase(word));
+            orPerWord.or(variant.switchType.containsIgnoreCase(word));
+            orPerWord.or(variant.switchName.containsIgnoreCase(word));
+            orPerWord.or(variant.keyPressureValue.containsIgnoreCase(word));
+            orPerWord.or(variant.keyPressureLabel.containsIgnoreCase(word));
+
+            wordWiseAnd.and(orPerWord);
+        }
+
+        // 최종: 전체문장 OR (단어 AND)
+        condition.or(fullText).or(wordWiseAnd);
+        return condition;
+    }
+
 }
