@@ -18,7 +18,6 @@ public class KeyboardDto {
     private String weightValue;
     private String weightLabel;
     private String backlight;
-    private String switchName;
     private String housingColor;
 
     private List<KeyboardVariant> variant;
@@ -33,7 +32,7 @@ public class KeyboardDto {
     })*/
     public KeyboardDto(Long id, String name, String manufacturer, String layout
                         , String keyCount, String connection, String weightValue, String weightLabel
-                        , String backlight, String switchName, String housingColor
+                        , String backlight, String housingColor
                         , List<KeyboardVariant> variant) {
         this.id = id;
         this.name = name;
@@ -44,7 +43,6 @@ public class KeyboardDto {
         this.weightValue = weightValue;
         this.weightLabel = weightLabel;
         this.backlight = backlight;
-        this.switchName = switchName;
         this.housingColor = housingColor;
         this.variant = variant;
 

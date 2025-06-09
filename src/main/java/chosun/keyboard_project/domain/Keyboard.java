@@ -21,7 +21,6 @@ public class Keyboard {
     private String weightValue;       // ex) 무게의 정확한 수치 900g 등
     private String weightLabel;       // ex) 가벼운
     private String backlight;         // 백라이트
-    private String switchType;        // ex) 리니어
     private String housingColor;      // ex) 블랙
 
 //    mappedBy = "keyboard" → 반대쪽에서 이 필드를 통해 매핑된다는 뜻

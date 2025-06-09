@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
 자바에서는 다중 상속이 허용되지 않지만 인터페이스는 가능.
@@ -69,4 +70,6 @@ public interface KeyboardRepository extends JpaRepository<Keyboard, Long>, Keybo
 //            @Param("manufacturers") List<String> manufacturers,
 //            @Param("sounds") List<String> sounds
 //    );
+    @Query("SELECT DISTINCT k FROM Keyboard k LEFT JOIN FETCH k.variants WHERE k.id = :id")
+    Optional<Keyboard> findWithVariantsById(@Param("id") Long id);
 }

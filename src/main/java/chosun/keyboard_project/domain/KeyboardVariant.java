@@ -1,5 +1,6 @@
 package chosun.keyboard_project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,6 +12,7 @@ public class KeyboardVariant {
     private Long id;
 
     private String purpose;           // 게임용 / 사무용
+    private String switchType;        // ex) 리니어
     private String switchName;        // 적축 / 갈축 등
     private Integer price;
     private String keyPressureValue;  // 43g
@@ -28,5 +30,6 @@ public class KeyboardVariant {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "keyboard_id")
+    @JsonIgnore  // 무한 순환 방지 매우 중요
     private Keyboard keyboard;
 }

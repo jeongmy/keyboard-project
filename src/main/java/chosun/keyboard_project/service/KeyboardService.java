@@ -23,7 +23,7 @@ public class KeyboardService {
     }
 
     public KeyboardDto getKeyboard(long id){
-        Keyboard keyboard = keyboardRepository.findById(id)
+        Keyboard keyboard = keyboardRepository.findWithVariantsById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 키보드가 존재하지 않습니다. ID:" + id));
 
         return convertToDto(keyboard);
@@ -66,7 +66,6 @@ public class KeyboardService {
                 keyboard.getWeightValue(),
                 keyboard.getWeightLabel(),
                 keyboard.getBacklight(),
-                keyboard.getSwitchType(),
                 keyboard.getHousingColor(),
                 keyboard.getVariants()
         );

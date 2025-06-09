@@ -133,7 +133,7 @@ public class KeyboardRepositoryImpl implements KeyboardRepositoryCustom{
             builder.and(keyboard.backlight.in(filterDto.getBacklights()));
         }
         if (filterDto.getSwitchTypes() != null && !filterDto.getSwitchTypes().isEmpty()) {
-            builder.and(keyboard.switchType.in(filterDto.getSwitchTypes()));
+            builder.and(variant.switchType.in(filterDto.getSwitchTypes()));
         }
         if (filterDto.getManufacturers() != null && !filterDto.getManufacturers().isEmpty()) {
             builder.and(keyboard.manufacturer.in(filterDto.getManufacturers()));
