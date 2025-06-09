@@ -34,7 +34,6 @@ public class UserService {
 
     public UserJoinResponseDTO join(UserJoinRequestDTO dto) {
 
-
         // userId 중복 체크
         if (userRepository.findByUserId(dto.getUserId()).isPresent()) {
             System.out.println(dto.getUserId() + "는 이미 존재하는 ID: 회원가입 실패");
