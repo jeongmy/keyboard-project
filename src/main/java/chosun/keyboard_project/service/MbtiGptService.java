@@ -37,12 +37,12 @@ public class MbtiGptService {
         sb.append("필터를 만든 후에는 사용자가 이런 키보드를 선호할 것같은 이유를 설명해 주세요.\n\n");
 
         sb.append("❗ 반드시 아래 허용된 값만 사용해야 합니다:\n");
-        sb.append("- priceRanges: [\"null~49999\"], [\"50000~99999\"], [\"100000~149999\"], [\"150000~null\"]\n");
+        sb.append("- priceRanges: [\"null~99999\"], [\"100000~null\"]\n");
         sb.append("- weightLabels: [\"가벼운\", \"보통\", \"무거운\"]\n");
         sb.append("- connections: [\"유선\", \"무선\", \"유선+무선\"]\n");
         sb.append("- purposes: [\"게임용\", \"사무용\"]\n");
         sb.append("- layouts: [\"풀배열\", \"텐키리스\"]\n");
-        sb.append("- backlights: [\"레인보우 백라이트\", \"RGB 백라이트\", \"없음\"]\n");
+        sb.append("- backlights: [\"단색 백라이트\", \"레인보우 백라이트\", \"RGB 백라이트\", \"없음\"]\n");
         sb.append("- switchTypes: [\"리니어\", \"택타일\", \"클릭\"]\n");
         sb.append("- manufacturers: [\"ASUS\", \"AULA\", \"COX\", \"Ducky\", \"FL\", \"Keydous\", \"LEOBOG\", \"MCHOSE\", \"MOUNTAIN\", \"NZXT\", \"QSENN\", \"Razer\", \"Riccks\", \"VARMILO\", \"darkFlash\", \"다얼유\", \"마이크로닉스\", \"발키리\", \"웨이코스\", \"주연테크\", \"쿨러마스터\"]\n\n");
 
@@ -55,7 +55,20 @@ public class MbtiGptService {
             sb.append("   응답: ").append(a.getAnswer()).append("\n\n");
         }
 
-        // [3] 출력 포맷 안내
+        sb.append("너에게 도움이 될만한 지식을 줄게.\n");
+        sb.append("1. priceRanges는 가격과 관련된 필드야. 너가 사용자 분석 결과로 알아서 추천해\n");
+        sb.append("2. weightLabels는 아예 값을 추가하지마.\n");
+        sb.append("3. connections는 아예 값을 추가하지마.\n");
+        sb.append("4. purposes에서 사무용은 조용한 키보드고 게임용은 조금 시끄러운 특징이 있어. 관련된 단어가 있을 때에만 값을 추가해. 가격과는 상관없어.\n");
+        sb.append("5. layouts는 아예 값을 추가하지마.\n");
+        sb.append("6. backlights는 될 수 있으면 값을 추가하지마. 필요할 거 같다고 생각하면 넣어.\n");
+        sb.append("7. switchTypes는 너가 분석해서 필요할 겄 같다 싶으면 값을 추가해.\n");
+        sb.append("8. manufacturers는 가능한 많이 값을 추가해.\n\n");
+        sb.append("모든 필드를 사용할 필요는 없지만 필요하다고 생각되면 넣어.\n");
+        sb.append("한 필드에 여러 값을 넣어도 되고 안 넣어도 돼.\n");
+
+
+                // [3] 출력 포맷 안내
         sb.append("출력은 아래 형식처럼 JSON으로 해 주세요:\n");
         sb.append("{\n  \"filter\": {\n    ... 키보드 필터 값들 ...\n  },\n  \"analysis\": \"... 이 사용자가 이런 키보드를 선호하는 이유 설명 ...\"\n}");
 
