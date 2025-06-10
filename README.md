@@ -1,98 +1,98 @@
+# Keyboard Recommendation Web Project
 
-# keyboard-project
-Spring 기반 키보드 프로젝트(캡스톤)
+**맞춤형 키보드 추천 웹 사이트**  
+**팀명: team-04**
 
-# team-04
+---
 
+## 📌 프로젝트 개요
 
+- 초보자도 쉽게 접할 수 있는 기계식 키보드 추천 웹사이트입니다.  
+- 필터링 검색, AI 기반 GPT 추천, MBTI 추천 등을 통해 사용자 맞춤형 키보드를 추천합니다.
 
-## Getting started
+---
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## 📌 프로젝트 최종 목표
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- 기계식 키보드에 익숙하지 않은 초보자들이 쉽게 맞춤형 키보드를 선택할 수 있도록 돕는 웹 기반 추천 플랫폼을 구축하는 것입니다.
+- 사용자의 선호 조건과 사용 목적, 성향에 따라 최적의 키보드를 추천하고 다양한 부가 기능(타건 테스트, AI 추천, MBTI 추천 등)을 제공하여 사용자의 경험을 극대화하는 것입니다.
 
-## Add your files
+---
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## 📌 기본 기능
 
-```
-cd existing_repo
-git remote add origin https://git.chosun.ac.kr/iap1-2025/class-06/team-04.git
-git branch -M main
-git push -uf origin main
-```
+1. 메인 페이지 구성
+ - 인기 키보드 6개를 슬라이드로 표현하여 시각적으로 강조합니다.
+ ![메인 페이지(튜토리얼 박스 열고 닫기 가능)](images/main_tutorial.png)
+ - 상단 검색창을 통한 키보드 이름 검색(일반 검색) 기능을 제공합니다.
+ ![일반 검색창](images/search.png)
+ ![일반 검색창 결과](images/search_result.png)
 
-## Integrate with your tools
+2. 회원 관리 기능
+ - 회원가입, 로그인, 로그아웃, 비밀번호 변경, 회원 탈퇴 기능을 제공합니다.
+ - 아이디 찾기(가입 시 이메일 기반) 기능을 제공합니다.
+ - 비밀번호 찾기(가입 시 이메일로 임시 비밀번호 발송) 기능을 제공합니다.
+ - JWT 기반 인증 시스템을 적용하여 보안을 유지합니다.
+ - 사용자 접근성을 고려하여 직관적인 레이아웃을 구성합니다.
+ ![회원가입](images/join.png)
+ ![로그인(아이디 찾기, 비밀번호 찾기)](images/login.png)
+ ![로그인 성공 시 헤더](images/success-login.png)
+ ![마이페이지(비밀번호 변경, 회원 탈퇴)](images/mypage.png)
 
-- [ ] [Set up project integrations](https://git.chosun.ac.kr/iap1-2025/class-06/team-04/-/settings/integrations)
+3. 필터링 검색 기능
+ - 필터링 체크박스를 통해 사용자가 원하는 조건을 다중으로 선택할 수 있도록 합니다.
+ - 필터 항목으로는 제조사, 용도, 연결 방식, 무게, 백라이트, 키 배열, 스위치, 가격이 있습니다.
+ ![필터링 결과](images/filter_result.png)
+ - 해당 조건에 부합하는 키보드를 검색하여 5개씩 페이지네이션으로 표시합니다.
+ ![필터링 결과 키보드 리스트](images/keyboard_list.png)
+ - 정렬 기능(낮은 가격순/높은 가격순 구현)을 제공합니다.
+ ![정렬 기능](images/price_cheap.png)
+4. 키보드 상세 페이지
+ - 선택한 키보드의 공통 사양(제조사, 연결 방식, 무게, 백라이트, 키 배열, 하우징 색상)을 제공합니다.
+ - 동일 모델의 다양한 스위치(축) 구성 및 가격 정보, 구매 링크를 상세하게 나열합니다.
+ - 사용자가 선택한 조건과 유사한 다른 키보드 6개를 추천하는 유사 키보드 추천 박스를 구성합니다.
+ - 댓글 기능을 통해 댓글을 작성, 삭제, 조회할 수 있습니다.
+ ![상세 페이지](images/keyboard_detail.png)
+5. 찜 기능
+ - 키보드 상세 페이지에서 하트 아이콘 클릭 시 해당 키보드를 찜 목록에 추가합니다,
+ - 로그인 한 사용자만 본인의 찜 목록을 확인할 수 있습니다.
+ - 찜 목록은 유지되며, 추후 사용자가 다시 확인할 수 있습니다.
 
-## Collaborate with your team
+---
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+## 📌 핵심 기능
+1. 스위치 타건 테스트 기능
+ - 메인 화면에 리니어, 택타일, 클릭키 버튼을 제공합니다.
+ ![스위치 버튼들](images/soundbutton.png)
+ - 각 버튼 클릭 시 타건 테스트 페이지로 이동합니다.
+ - 해당 페이지에서 키보드 키를 직접 눌러 타건 소리(축별, 키별)를 실시간으로 청취할 수 있습니다.
+ ![스위치별 타건 소리 청취](images/sound_result.png)
+ 2. AI 추천 검색 기능
+ - AI 검색창에 자연어로 원하는 키보드 조건을 입력할 수 있습니다. (예: “조용하고 저렴한 키보드 추천”)
+ ![AI 추천 검색버튼](images/gpt_button.png)
+ ![AI 추천 검색창](images/gpt_search.png)
+ - GPT가 사용자의 입력을 분석하여 조건에 부합하는 키보드를 추천합니다.
+ - 추천된 결과를 필터링 UI와 동일한 형태로 표시하여 사용자 경험의 일관성을 유지합니다.
+ ![AI 추천 결과](images/gpt_result.png)
+ 3. MBTI 기반 추천 기능
+ - 12개의 질문과 2지선다형 답변으로 구성된 테스트를 제공합니다.
+ ![MBTI 버튼](images/mbti_button.png)
+ ![MBTI 테스트](images/mbti_game.png)
+ - 사용자가 선택한 답변을 기반으로 AI가 MBTI(성향)를 분석합니다.
+ - 분석된 성향에 최적화된 키보드를 추천하여 심리적/성향적 만족도를 높입니다.
+---
 
-## Test and Deploy
+## 📌 기술 스택
 
-Use the built-in continuous integration in GitLab.
+- **Frontend**: React, HTML, CSS
+- **Backend**: Spring Boot, Spring Security, JPA, JWT
+- **Database**: MySQL
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+---
 
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
-
+## 📌 팀원
+- 오찬란 (프론트엔드 / React - .js)
+- 이세화 (프론트엔드 / React - .css)
+- 김정민 (백엔드)
+- 박호성
+- 서 적
