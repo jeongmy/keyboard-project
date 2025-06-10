@@ -6,8 +6,12 @@ import chosun.keyboard_project.dto.keyboardDTO.KeyboardFilterRequestDTO;
 import chosun.keyboard_project.dto.PagedResponseDTO;
 import chosun.keyboard_project.repository.CommentRepository;
 import chosun.keyboard_project.service.CommentService;
+import chosun.keyboard_project.service.CustomUserDetails;
+import chosun.keyboard_project.service.FavoriteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import chosun.keyboard_project.service.KeyboardService;
 
@@ -19,11 +23,13 @@ public class KeyboardController {
 
     private final KeyboardService keyboardService;
     private final CommentService commentService;
+    private final FavoriteService favoriteService;
 
     @Autowired
-    public KeyboardController(KeyboardService keyboardService, CommentService commentService) {
+    public KeyboardController(KeyboardService keyboardService, CommentService commentService, FavoriteService favoriteService) {
         this.keyboardService = keyboardService;
         this.commentService = commentService;
+        this.favoriteService = favoriteService;
     }
 
     @GetMapping("/hello")
@@ -68,6 +74,28 @@ public class KeyboardController {
     @GetMapping("/{keyboardId}/comments")
     public ResponseEntity<List<CommentResponseDTO>> getCommentsByKeyboard(@PathVariable(name = "keyboardId") Long keyboardId) {
         return ResponseEntity.ok(commentService.getCommentsByKeyboard(keyboardId));
+    }
+
+
+
+
+    @PostMapping("/{id}/favorite")
+    public ResponseEntity<Boolean> addFavorite(@PathVariable("id") Long keyboardId,
+                                               @AuthenticationPrincipal CustomUserDetails userDetails) {
+        favoriteService.addFavorite(keyboardId, userDetails.getUsername());
+        return ResponseEntity.ok(true); // 찜됨
+    }
+
+    @DeleteMapping("/{id}/favorite")
+    public ResponseEntity<Boolean> removeFavorite(@PathVariable("id") Long keyboardId,
+                                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
+        favoriteService.removeFavorite(keyboardId, userDetails.getUsername());
+        return ResponseEntity.ok(false); // 찜 해제됨
+    }
+
+    @GetMapping("/favorites")
+    public ResponseEntity<List<KeyboardDto>> getMyFavorites(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseEntity.ok(favoriteService.getFavorites(userDetails.getUsername()));
     }
 
 
