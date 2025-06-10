@@ -46,6 +46,7 @@ public class CommentService {
 
         return comments.stream()
                 .map(c -> new CommentResponseDTO(
+                        c.getId(),
                         c.getUser().getUsername(),
                         c.getContent(),
                         c.getCreatedAt()))
