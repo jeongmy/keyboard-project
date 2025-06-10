@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import chosun.keyboard_project.service.KeyboardService;
 
@@ -83,10 +84,11 @@ public class KeyboardController {
     public ResponseEntity<Boolean> addFavorite(@PathVariable("id") Long keyboardId,
                                                @AuthenticationPrincipal CustomUserDetails userDetails) {
         favoriteService.addFavorite(keyboardId, userDetails.getUsername());
+
         return ResponseEntity.ok(true); // 찜됨
     }
 
-    @DeleteMapping("/{id}/favorite")
+    @DeleteMapping("/{id}/favorite")@Transactional
     public ResponseEntity<Boolean> removeFavorite(@PathVariable("id") Long keyboardId,
                                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
         favoriteService.removeFavorite(keyboardId, userDetails.getUsername());

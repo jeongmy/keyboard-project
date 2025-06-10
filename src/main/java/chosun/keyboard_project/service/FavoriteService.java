@@ -24,7 +24,7 @@ public class FavoriteService {
     private final KeyboardRepository keyboardRepository;
 
     public void addFavorite(Long keyboardId, String username) {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
 
         Keyboard keyboard = keyboardRepository.findById(keyboardId)
@@ -40,7 +40,7 @@ public class FavoriteService {
     }
 
     public void removeFavorite(Long keyboardId, String username) {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
 
         Keyboard keyboard = keyboardRepository.findById(keyboardId)
@@ -50,7 +50,7 @@ public class FavoriteService {
     }
 
     public List<KeyboardDto> getFavorites(String username) {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
 
         return favoriteRepository.findAllByUser(user)
