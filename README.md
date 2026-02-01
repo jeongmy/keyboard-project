@@ -1,6 +1,6 @@
 # Keyboard Recommendation Web Project
 
-**맞춤형 키보드 추천 웹 사이트**  
+**맞춤형 기계식 키보드 추천 웹 사이트**  
 **팀명: team-04**
 
 ---
@@ -85,8 +85,7 @@
 ## 📌 기술 스택
 
 - **Frontend**: React, HTML, CSS
-- **Backend**: Spring Boot, Spring Security, JPA, JWT
-- **Database**: MySQL
+- **Backend**: Spring Boot, JPA, JWT, MySql, AWS EC2, S3, QueryDsl, Nginx
 
 ---
 
