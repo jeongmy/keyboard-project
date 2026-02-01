@@ -45,8 +45,8 @@ public class KeyboardController {
     }
 
 //  예외 처리
-//  ❌ 필터 결과가 아무 것도 없을 경우	서비스	200 OK + 빈 리스트 or 404
-//  ❌ DTO가 아예 null로 들어옴	컨트롤러	400 Bad Request
+//  필터 결과가 아무 것도 없을 경우	서비스	200 OK + 빈 리스트 or 404
+//  DTO가 아예 null로 들어옴	컨트롤러	400 Bad Request
     @PostMapping("/filter/qdsl")
     public ResponseEntity<PagedResponseDTO<KeyboardDto>> filterKeyboardsByQdsl(
             @RequestBody KeyboardFilterRequestDTO filterDto,
@@ -76,9 +76,6 @@ public class KeyboardController {
     public ResponseEntity<List<CommentResponseDTO>> getCommentsByKeyboard(@PathVariable(name = "keyboardId") Long keyboardId) {
         return ResponseEntity.ok(commentService.getCommentsByKeyboard(keyboardId));
     }
-
-
-
 
     @PostMapping("/{id}/favorite")
     public ResponseEntity<Boolean> addFavorite(@PathVariable("id") Long keyboardId,

@@ -25,8 +25,8 @@ public class GptController {
     public ResponseEntity<?> filter(@RequestBody Map<String, String> body) {
         System.out.println("GPT 호출!!!");
         String message = body.get("message");
-//        KeyboardFilterRequestDto filterDto = gptService.handleUserInput(message);
-//        return ResponseEntity.ok(filterDto);
+//      KeyboardFilterRequestDto filterDto = gptService.handleUserInput(message);
+//      return ResponseEntity.ok(filterDto);
 
         try {
             KeyboardFilterRequestDTO filterDto = gptService.handleUserInput(message);

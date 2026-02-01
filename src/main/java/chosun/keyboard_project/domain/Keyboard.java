@@ -23,9 +23,9 @@ public class Keyboard {
     private String backlight;         // 백라이트
     private String housingColor;      // ex) 블랙
 
-//    mappedBy = "keyboard" → 반대쪽에서 이 필드를 통해 매핑된다는 뜻
-//    cascade = CascadeType.ALL → 키보드 저장 시 variant도 같이 저장 가
-//    orphanRemoval = true → 키보드에서 variant 제거 시 DB에서도 삭제됨
+//  mappedBy = "keyboard" → 반대쪽에서 이 필드를 통해 매핑된다는 뜻
+//  cascade = CascadeType.ALL → 키보드 저장 시 variant도 같이 저장 가
+//  orphanRemoval = true → 키보드에서 variant 제거 시 DB에서도 삭제됨
     @OneToMany(mappedBy = "keyboard", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<KeyboardVariant> variants = new ArrayList<>();
 }

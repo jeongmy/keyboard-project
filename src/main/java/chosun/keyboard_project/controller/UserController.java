@@ -1,6 +1,5 @@
 package chosun.keyboard_project.controller;
 
-
 import chosun.keyboard_project.domain.User;
 import chosun.keyboard_project.dto.CommentRequestDTO;
 import chosun.keyboard_project.dto.CommentResponseDTO;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 @RestController
 @RequestMapping("/users")

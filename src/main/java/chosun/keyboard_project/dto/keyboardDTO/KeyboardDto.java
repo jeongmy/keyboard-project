@@ -26,7 +26,7 @@ public class KeyboardDto {
 
     private List<KeyboardVariant> variant;
 
-    private boolean liked = false; // 👈 로그인한 사용자 기준 찜 여부
+    private boolean liked = false; //  로그인한 사용자 기준 찜 여부
 
     // 생성자, getter, setter 생략 또는 Lombok 사용 가능
 

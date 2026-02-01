@@ -19,7 +19,7 @@ JpaRepository는 Spring Data Jpa에서 제공하는 인터페이스이며 이미
 Spring 세계에서는 예를 들어 지금 KeyboardRepository도 결국 인터페이스인데 다른 뭐 예를 들어 KeyboardService에서
 바로 private KeyboardRepository keyboardRepository;하고 생성자 @AutoWired해서 사용함.
 
-이게 왜 가능하냐?
+이게 왜 가능하나?
 Spring Data JPA의 동적 프록시(Dynamic Proxy)
 Spring은 애플리케이션 시작할 때, KeyboardRepository를 보고:
 "JpaRepository를 상속했네? 그럼 내가 구현체 만들어줄게" $JpaRepository는 @Repository 같은 걸 안 붙여도 빈으로 등록됨.
@@ -27,15 +27,14 @@ Spring은 애플리케이션 시작할 때, KeyboardRepository를 보고:
 이 구현체는 보통 SimpleJpaRepository라는 클래스에 기반하고, 거기에 네가 만든 @Query나 findBy~ 같은 규칙 기반 메서드도 자동으로 붙여줌.
 JpaRepository는 Spring이 제공하는 기본 인터페이스
 그 구현체인 SimpleJpaRepository는 Spring이 런타임에 자동으로 연결
-너는 인터페이스만 선언하면, 자동으로 JPA 기본 메서드들이 동작함
+난 인터페이스만 선언하면, 자동으로 JPA 기본 메서드들이 동작함
 
- 🥝
 Spring은 내부적으로 KeyboardRepository를 사용할 때,
 KeyboardRepositoryCustom을 구현한 클래스 중 이름이 정확히 KeyboardRepositoryImpl인 구현체를 자동으로 찾아서 연결해줌.
 여기서 포인트:
 Spring은 KeyboardRepository와 이름이 앞부분이 일치하는 Impl 클래스만 자동으로 붙여줌.
 
-🔥 이 구조가 왜 필요한가?
+이 구조가 왜 필요한가?
 KeyboardRepository는 JpaRepository를 상속받기 때문에
 스프링 데이터 JPA가 자동으로 기본적인 CRUD는 구현해주고
 우리는 복잡한 동적 쿼리(searchKeyboardByFilters) 같은 건
